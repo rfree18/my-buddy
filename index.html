@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Virtual Pet</title>
-		<link rel="stylesheet" href="./css/styles.css" type="text/css">
-		<script src = "./libraries/p5.min.js" type="text/javascript"></script>
-		<script src = "./libraries/p5.dom.js" type = "text/javascript"></script>
-		<script src = "./libraries/p5.sound.js" type = "text/javascript"></script>
-		<script src = "sketch.js" type = "text/javascript"></script>
-	</head>
-	<body>
-		<div id = "header">
-			<h1>P5 Virtual Pet!</h1>
+<head>
+	<title>Virtual Pet</title>
+	<link rel="stylesheet" href="./css/styles.css" type="text/css">
+
+	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
+	<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css" />
+	<script src= "config.js"></script>
+	<script src = "./libraries/p5.min.js" type="text/javascript"></script>
+	<script src = "./libraries/p5.dom.js" type = "text/javascript"></script>
+	<script src = "./libraries/p5.sound.js" type = "text/javascript"></script>
+	<script src = "sketch.js" type = "text/javascript"></script>
+</head>
+<body>
+	<div id = "header">
+		<h1>P5 Virtual Pet!</h1>
+	</div>
+	<div id="loaded" class="hidden">
+		<div id="main">
+			<div id="user-signed-in" class="hidden">
+				<div id="user-info">
+					<div id="photo-container">
+						<img id="photo">
+					</div>
+					<div id="name"></div>
+					<div id="email"></div>
+					<div id="phone"></div>
+					<div class="clearfix"></div>
+				</div>
+				<p>
+					<button id="sign-out">Sign Out</button>
+				</p>
+			</div>
+			<div id="user-signed-out" class="hidden">
+				<h4>You are signed out.</h4>
+				<div id="firebaseui-spa">
+					<h5>Single Page Application mode:</h5>
+					<div id="firebaseui-container"></div>
+				</div>
+			</div>
 		</div>
-		<div id = "sketch-holder">
-		</div>
-		<div id = "footer">
-		</div>
-	</body>
+	</div>
+	<div id = "sketch-holder">
+	</div>
+	<div id = "footer">
+	</div>
+	<!-- Auth handling JS should go at end to prevent element errors -->
+	<script src = "app.js"></script>
+</body>
 </html>
