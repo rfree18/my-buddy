@@ -21,6 +21,11 @@ function getUiConfig() {
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
 var handleSignedInUser = function(user) {
+  console.log(user);
+  db.collection("users").doc(user.uid).set({
+    name: user.displayName
+  });
+
   document.getElementById('user-signed-in').style.display = 'block';
   document.getElementById('user-signed-out').style.display = 'none';
   document.getElementById('name').textContent = user.displayName;

@@ -6,4 +6,6 @@ var config = {
   storageBucket: "p5agotchi.appspot.com",
   messagingSenderId: "954265631660"
 };
+
 firebase.initializeApp(config);
+var db = firebase.firestore();
