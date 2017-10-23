@@ -27,10 +27,9 @@ var handleSignedInUser = function(user) {
     name: user.displayName
   });
 
-  document.getElementById('user-signed-in').style.display = 'block';
-  document.getElementById('user-signed-out').style.display = 'none';
-  document.getElementById('name').textContent = user.displayName;
-  document.getElementById('email').textContent = user.email;
+  document.getElementById('sign-out').style.display = 'block';
+  document.getElementById('firebaseui-container').style.display = 'none';
+  document.getElementById('name').textContent = `Sign out (${user.email})`;
   if (user.photoURL){
     document.getElementById('photo').src = user.photoURL;
     document.getElementById('photo').style.display = 'block';
@@ -46,8 +45,8 @@ var handleSignedInUser = function(user) {
 var handleSignedOutUser = function() {
   currUser = undefined;
 
-  document.getElementById('user-signed-in').style.display = 'none';
-  document.getElementById('user-signed-out').style.display = 'block';
+  document.getElementById('sign-out').style.display = 'none';
+  document.getElementById('firebaseui-container').style.display = 'block';
   ui.start('#firebaseui-container', getUiConfig());
 };
 

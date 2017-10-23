@@ -3,19 +3,25 @@ body{
 	text-align: center;
 	margin: auto;
 }
+
+.navbar {
+	height: 50px;
+}
+
+#photo-container {
+	display: flex;
+  align-items: center;
+	float: right;
+}
+
+#name {
+	float: right;
+	padding-left: 10px;
+}
+
 #sketch-holder{
 	margin: auto;
 	text-align: center;
-	padding-top:35px;
+	padding-top:50px;
 	padding-bottom: 35px;
-}
-#header{
-	width: 70%;
-	text-align: center;
-	border: 7.5px solid black;
-	background-color: #444444;
-	color: white;
-}
-#footer{
-
 }
