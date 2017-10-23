@@ -22,6 +22,7 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
 var handleSignedInUser = function(user) {
   console.log(user);
+  currUser = user;
   db.collection("users").doc(user.uid).set({
     name: user.displayName
   });
@@ -44,6 +45,8 @@ var handleSignedInUser = function(user) {
  * Displays the UI for a signed out user.
  */
 var handleSignedOutUser = function() {
+  currUser = undefined;
+
   document.getElementById('user-signed-in').style.display = 'none';
   document.getElementById('user-signed-out').style.display = 'block';
   ui.start('#firebaseui-container', getUiConfig());
