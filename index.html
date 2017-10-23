@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Virtual Pet</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 	<link rel="stylesheet" href="./css/styles.css" type="text/css">
 
 	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
@@ -15,19 +16,21 @@
 	<script src = "sketch.js" type = "text/javascript"></script>
 </head>
 <body>
-	<div id = "header">
-		<h1>P5 Virtual Pet!</h1>
-	</div>
+	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+		 <a class="navbar-brand col-md-8" style="text-align: left;" href="#">p5agotchi</a>
+		 <div class="col-md-4 "id="firebaseui-spa" >
+			 <div id="firebaseui-container" style="float: right;"></div>
+		 </div>
+	</nav>
 	<div id="loaded" class="hidden">
 		<div id="main">
 			<div id="user-signed-in" class="hidden">
 				<div id="user-info">
 					<div id="photo-container">
-						<img id="photo">
+						<img style="width: 10%" id="photo">
 					</div>
 					<div id="name"></div>
 					<div id="email"></div>
-					<div id="phone"></div>
 					<div class="clearfix"></div>
 				</div>
 				<p>
@@ -36,10 +39,7 @@
 			</div>
 			<div id="user-signed-out" class="hidden">
 				<h4>You are signed out.</h4>
-				<div id="firebaseui-spa">
-					<h5>Single Page Application mode:</h5>
-					<div id="firebaseui-container"></div>
-				</div>
+
 			</div>
 		</div>
 	</div>

@@ -11,7 +11,16 @@ function setup(){
 	myCanvas.parent("sketch-holder");
 }
 function draw(){
+	background(0, 0, 100);
+	textSize(50);
+	fill(255);
+	textAlign(CENTER);
 
+	if(currUser == undefined) {
+		text("Please login to continue", 375, 375);
+	} else {
+		text(`Welcome ${currUser.displayName}!`, 375, 375);
+	}
 }
 //This will be the pet object that the user must raise
 function Character(n){

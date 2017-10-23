@@ -31,7 +31,6 @@ var handleSignedInUser = function(user) {
   document.getElementById('user-signed-out').style.display = 'none';
   document.getElementById('name').textContent = user.displayName;
   document.getElementById('email').textContent = user.email;
-  document.getElementById('phone').textContent = user.phoneNumber;
   if (user.photoURL){
     document.getElementById('photo').src = user.photoURL;
     document.getElementById('photo').style.display = 'block';
