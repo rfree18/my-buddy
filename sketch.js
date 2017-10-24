@@ -9,6 +9,7 @@ var timer =200;
 var myChar;
 var foodButtonPic;
 var medecineButtonPic;
+var outsideButton;
 
 var buttons = [];
 function preload(){
@@ -20,12 +21,14 @@ function preload(){
 	bg = loadImage("img/defaultBG.png");
 	foodButtonPic = loadImage("img/buttons/food.png");
 	medecineButtonPic = loadImage("img/buttons/medecine.png");
+	outsideButton = loadImage("img/buttons/outside.png");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
 	myCanvas.parent("sketch-holder");
 	myChar = new Character("Billy");
 	imageMode(CENTER);
+	buttons.push(new Button("Outside", outsideButton, 500, 550));
 	buttons.push(new Button("Food", foodButtonPic, 375, 550));
 	buttons.push(new Button("Medecine", medecineButtonPic, 250, 550));
 }
