@@ -2,9 +2,13 @@
 	The main JavaScript file to run our Virtual pet
 	Contains the draw function, which is what prints to the screen
 */
+var walkImg;
+var bg;
+var timer =400;
 
 function preload(){
-
+	walkImg = loadImage("img/character_imgs/blueBaby/walk.png");
+	bg = loadImage("img/defaultBG.png");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -18,8 +22,13 @@ function draw(){
 
 	if(currUser == undefined) {
 		text("Please login to continue", 375, 375);
-	} else {
+	} else if(timer > 0){
 		text(`Welcome ${currUser.displayName}!`, 375, 375);
+		timer--;
+	}
+	else{
+		image(bg, 0,0);
+
 	}
 }
 //This will be the pet object that the user must raise
@@ -45,6 +54,9 @@ function Character(n){
 	this.stage = 0;
 	//Happiness variable: 0 is least happy to 10 most happy
 	this.happiness = 0;
+
+	this.walkCycle = [];
+
 
 
 	this.display = function(){
@@ -85,4 +97,8 @@ function Character(n){
 	this.makeHungry = function(){
 		//Decrement hunger
 	};
+	this.walkLeft = function(){
+		//walks left on the screen
+
+	}
 }
