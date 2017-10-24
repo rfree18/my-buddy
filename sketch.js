@@ -5,9 +5,11 @@
 var walkImg;
 var petImg;
 var bg;
-var timer =400;
+var timer =200;
 var myChar;
 var foodButtonPic;
+var medecineButtonPic;
+
 var buttons = [];
 function preload(){
 	walkImg = [];
@@ -17,6 +19,7 @@ function preload(){
 	petImg = loadImage("img/character_imgs/blueBaby/babyFWD.png");
 	bg = loadImage("img/defaultBG.png");
 	foodButtonPic = loadImage("img/buttons/food.png");
+	medecineButtonPic = loadImage("img/buttons/medecine.png");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -24,6 +27,7 @@ function setup(){
 	myChar = new Character("Billy");
 	imageMode(CENTER);
 	buttons.push(new Button("Food", foodButtonPic, 375, 550));
+	buttons.push(new Button("Medecine", medecineButtonPic, 250, 550));
 }
 function draw(){
 	background(0, 0, 100);
@@ -39,7 +43,9 @@ function draw(){
 	}
 	else{
 		image(bg, 375,375, 750, 750);
-		buttons[0].display();
+		for(let i = 0; i < buttons.length; i++){
+			buttons[i].display();
+		}
 		myChar.display();
 	}
 }
