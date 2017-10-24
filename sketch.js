@@ -48,12 +48,16 @@ function draw(){
 		timer--;
 	}
 	else{
+		drawWindow();
 		image(bg, 375,375, 750, 750);
 		for(let i = 0; i < buttons.length; i++){
 			buttons[i].display();
 		}
 		myChar.display();
 	}
+}
+function drawWindow(){
+
 }
 //This will be the pet object that the user must raise
 function Character(n){
