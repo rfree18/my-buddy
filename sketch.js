@@ -7,7 +7,8 @@ var petImg;
 var bg;
 var timer =400;
 var myChar;
-
+var foodButtonPic;
+var buttons = [];
 function preload(){
 	walkImg = [];
 	for(let i = 1; i <= 5; i++){
@@ -15,12 +16,14 @@ function preload(){
 	}
 	petImg = loadImage("img/character_imgs/blueBaby/babyFWD.png");
 	bg = loadImage("img/defaultBG.png");
+	foodButtonPic = loadImage("img/buttons/food.png");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
 	myCanvas.parent("sketch-holder");
 	myChar = new Character("Billy");
 	imageMode(CENTER);
+	buttons.push(new Button("Food", foodButtonPic, 375, 550));
 }
 function draw(){
 	background(0, 0, 100);
@@ -36,6 +39,7 @@ function draw(){
 	}
 	else{
 		image(bg, 375,375, 750, 750);
+		buttons[0].display();
 		myChar.display();
 	}
 }
@@ -137,6 +141,7 @@ function Character(n){
 	};
 	this.makeHungry = function(){
 		//Decrement hunger
+
 	};
 	this.walkLeft = function(){
 		//walks left on the screen
@@ -201,6 +206,32 @@ function Character(n){
 					this.walkUp = true;
 				}
 			}
+		}
+	}
+}
+function Button(name, img,x,y){
+	this.name = name;
+	this.pic = img;
+	this.xPos = x;
+	this.yPos = y;
+
+
+	this.checkHovering = function(){
+		if(mouseX > this.xPos - 50 && mouseX < this.xPos + 50 && mouseY > this.yPos-50 && mouseY < this.yPos+50){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	this.display = function(){
+		if(this.checkHovering() === false){
+			image(this.pic, this.xPos, this.yPos);
+		}
+		else{
+			fill(0);
+			rect(this.xPos-50, this.yPos-50, 100, 100);
+			image(this.pic, this.xPos, this.yPos);
 		}
 	}
 }
