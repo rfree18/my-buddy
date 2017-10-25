@@ -33,7 +33,7 @@ function preload(){
 function setup(){
 	myCanvas = createCanvas(750, 750);
 	myCanvas.parent("sketch-holder");
-	myChar = new Character("Billy");
+	myChar = new Character();
 	imageMode(CENTER);
 	buttons.push(new Button("Toilet", toiletButton, 600, 525));
 	buttons.push(new Button("Outside", outsideButton, 450, 525));
