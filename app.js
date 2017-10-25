@@ -45,16 +45,17 @@ var getCharacter = function(user) {
       const data = JSON.parse(doc.data().creature);
       myChar = new Character(data);
     } else {
-      db.collection("users").doc(user.uid).set({
-        name: user.displayName,
-        creature: JSON.stringify(myChar)
-      });
+      sendCharacter();
     }
   }).catch(function(error) {
-    db.collection("users").doc(user.uid).set({
-      name: user.displayName,
-      creature: JSON.stringify(myChar)
-    });
+    sendCharacter();
+  });
+}
+
+var sendCharacter = function() {
+  db.collection("users").doc(user.uid).set({
+    name: user.displayName,
+    creature: JSON.stringify(myChar)
   });
 }
 
