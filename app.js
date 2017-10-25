@@ -9,11 +9,11 @@ function getUiConfig() {
       }
     },
     signInSuccessUrl: '#',
-		signInFlow: 'popup',
-		signInOptions: [
-			// Leave the lines as is for the providers you want to offer your users.
-			firebase.auth.GoogleAuthProvider.PROVIDER_ID
-		]
+    signInFlow: 'popup',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ]
   }
 }
 
@@ -23,9 +23,8 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var handleSignedInUser = function(user) {
   console.log(user);
   currUser = user;
-  db.collection("users").doc(user.uid).set({
-    name: user.displayName
-  });
+
+  getCharacter(user);
 
   document.getElementById('sign-out').style.display = 'block';
   document.getElementById('firebaseui-container').style.display = 'none';
@@ -38,10 +37,27 @@ var handleSignedInUser = function(user) {
   }
 };
 
+var getCharacter = function(user) {
+  var docRef = db.collection("users").doc(user.uid);
+
+  docRef.get().then(function(doc) {
+    if (doc.data().creature) {
+      const data = JSON.parse(doc.data().creature);
+      myChar = new Character(data);
+    } else {
+      db.collection("users").doc(user.uid).set({
+        name: user.displayName,
+        creature: JSON.stringify(myChar)
+      });
+    }
+  }).catch(function(error) {
+    alert("Network error:", error);
+  });
+}
 
 /**
- * Displays the UI for a signed out user.
- */
+* Displays the UI for a signed out user.
+*/
 var handleSignedOutUser = function() {
   currUser = undefined;
 

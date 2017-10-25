@@ -1,27 +1,50 @@
-function Character(n){
-	this.name = n;
+function Character(obj){
+	if(obj === undefined) {
+			this.name = "Billy";
+
+		//Represents health of the user's pet
+		this.health = 50;
+		//Represents how hungry the pet is: 0 is very hungry, 10 is full.
+		this.hunger = 0;
+		//Represents how clean the pet is: the higher the number, the dirtier the pet
+		this.dirty = 0;
+		//Amount of love given to pet: can go negative
+		this.love = 0;
+		//Age measured in hours, minutes, and days
+		this.age = {
+			hours: 0,
+			minutes: 0,
+			days: 0
+		};
+		this.stage = 0;
+		//Happiness variable: 0 is least happy to 10 most happy
+		this.happiness = 0;
+	} else {
+		this.name = obj.name;
+
+		//Represents health of the user's pet
+		this.health = obj.health;
+		//Represents how hungry the pet is: 0 is very hungry, 10 is full.
+		this.hunger = obj.hunger;
+		//Represents how clean the pet is: the higher the number, the dirtier the pet
+		this.dirty = obj.dirty;
+		//Amount of love given to pet: can go negative
+		this.love = obj.love;
+		//Age measured in hours, minutes, and days
+		this.age = obj.age;
+		this.stage = obj.stage;
+		//Happiness variable: 0 is least happy to 10 most happy
+		this.happiness = obj.happiness;
+	}
+
 	this.xPos = 375;
 	this.yPos = 375;
-	//Represents health of the user's pet
-	this.health = 50;
-	//Represents how hungry the pet is: 0 is very hungry, 10 is full.
-	this.hunger = 0;
-	//Represents how clean the pet is: the higher the number, the dirtier the pet
-	this.dirty = 0;
-	//Amount of love given to pet: can go negative
-	this.love = 0;
-	//Age measured in hours, minutes, and days
-	this.age = {
-		hours: 0,
-		minutes: 0,
-		days: 0
-	};
+
+
 	//The array of images that represent the current character
 	this.imgArr = [];
 	//The stage is similar to the age, but is changed at specific ages.  0 is the baby stage
-	this.stage = 0;
-	//Happiness variable: 0 is least happy to 10 most happy
-	this.happiness = 0;
+
 
 	this.walkCycle = walkImg;
 	this.walkDir = 1;
@@ -30,7 +53,6 @@ function Character(n){
 	this.walkTimer = 8;
 
 	this.wait = false;
-
 
 	this.display = function(){
 		//Later on, display pet
