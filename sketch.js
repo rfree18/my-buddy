@@ -11,6 +11,9 @@ var foodButtonPic;
 var medecineButtonPic;
 var outsideButton;
 var toiletButton;
+var date = new Date();
+var sunWindow;
+var nightWindow;
 
 var buttons = [];
 function preload(){
@@ -24,6 +27,8 @@ function preload(){
 	medecineButtonPic = loadImage("img/buttons/medecine.png");
 	outsideButton = loadImage("img/buttons/outside.png");
 	toiletButton = loadImage("img/buttons/toilet.png");
+	nightWindow = loadImage("img/window/nightWindow.png");
+	sunWindow = loadImage("img/window/sunWindow.png");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -57,7 +62,18 @@ function draw(){
 	}
 }
 function drawWindow(){
-
+	if(date.getHours() >= 6 && date.getHours < 9){
+		//image(sunriseWindow, 172, 172);
+	}
+	else if(date.getHours() >= 9 && date.getHours() < 18){
+		image(sunWindow, 172, 172);
+	}
+	else if(date.getHours() >= 18 && date.getHours < 20){
+		//image(sunsetWindow, 172, 172);
+	}
+	else if(date.getHours() >= 20 && date.getHours() < 8){
+		image(nightWindow, 172, 172);
+	}
 }
 //This will be the pet object that the user must raise
 function Character(n){
