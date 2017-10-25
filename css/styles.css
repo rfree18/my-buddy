@@ -8,10 +8,21 @@ body{
 	height: 50px;
 }
 
+
+#sign-out {
+	margin-right: 16px;
+}
+
 #photo-container {
-	display: flex;
+	display: inline-flex;
   align-items: center;
 	float: right;
+}
+
+#firebaseui-spa {
+	position: absolute;
+	right: 0px;
+	display: inline-flex;
 }
 
 #name {
@@ -22,6 +33,6 @@ body{
 #sketch-holder{
 	margin: auto;
 	text-align: center;
-	padding-top:50px;
+	padding-top:65px;
 	padding-bottom: 35px;
 }
