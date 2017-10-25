@@ -51,7 +51,10 @@ var getCharacter = function(user) {
       });
     }
   }).catch(function(error) {
-    alert("Network error:", error);
+    db.collection("users").doc(user.uid).set({
+      name: user.displayName,
+      creature: JSON.stringify(myChar)
+    });
   });
 }
 
