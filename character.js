@@ -1,40 +1,20 @@
 function Character(obj){
 	if(obj === undefined) {
-			this.name = "Billy";
-
-		//Represents health of the user's pet
-		this.health = 50;
-		//Represents how hungry the pet is: 0 is very hungry, 10 is full.
-		this.hunger = 0;
-		//Represents how clean the pet is: the higher the number, the dirtier the pet
-		this.dirty = 0;
-		//Amount of love given to pet: can go negative
-		this.love = 0;
-		//Age measured in hours, minutes, and days
-		this.age = {
-			hours: 0,
-			minutes: 0,
-			days: 0
+		this.properties = {
+			name: "Billy",
+			health: 50,
+			hunger: 0,
+			dirty: 0,
+			love: 0,
+			stage: 0,
+			age: {
+				hours: 0,
+				minutes: 0,
+				days: 0
+			},
 		};
-		this.stage = 0;
-		//Happiness variable: 0 is least happy to 10 most happy
-		this.happiness = 0;
 	} else {
-		this.name = obj.name;
-
-		//Represents health of the user's pet
-		this.health = obj.health;
-		//Represents how hungry the pet is: 0 is very hungry, 10 is full.
-		this.hunger = obj.hunger;
-		//Represents how clean the pet is: the higher the number, the dirtier the pet
-		this.dirty = obj.dirty;
-		//Amount of love given to pet: can go negative
-		this.love = obj.love;
-		//Age measured in hours, minutes, and days
-		this.age = obj.age;
-		this.stage = obj.stage;
-		//Happiness variable: 0 is least happy to 10 most happy
-		this.happiness = obj.happiness;
+		this.properties = obj;
 	}
 
 	this.xPos = 375;
