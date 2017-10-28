@@ -42,8 +42,7 @@ var getCharacter = function(user) {
 
   docRef.get().then(function(doc) {
     if (doc.data().creature) {
-      const data = JSON.parse(doc.data().creature);
-      myChar = new Character(data);
+      myChar = new Character(doc.data().creature);
     } else {
       sendCharacter();
     }
@@ -55,7 +54,7 @@ var getCharacter = function(user) {
 var sendCharacter = function() {
   db.collection("users").doc(user.uid).set({
     name: user.displayName,
-    creature: JSON.stringify(myChar)
+    creature: myChar.properties
   });
 }
 
