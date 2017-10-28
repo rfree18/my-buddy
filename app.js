@@ -44,14 +44,14 @@ var getCharacter = function(user) {
     if (doc.data().creature) {
       myChar = new Character(doc.data().creature);
     } else {
-      sendCharacter();
+      sendCharacter(user);
     }
   }).catch(function(error) {
-    sendCharacter();
+    sendCharacter(user);
   });
 }
 
-var sendCharacter = function() {
+var sendCharacter = function(user) {
   db.collection("users").doc(user.uid).set({
     name: user.displayName,
     creature: myChar.properties
