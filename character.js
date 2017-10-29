@@ -34,6 +34,8 @@ function Character(obj){
 
 	this.wait = false;
 
+	this.intervalIds = [];
+
 	this.display = function(){
 		//Later on, display pet
 		if(this.wait){
@@ -68,6 +70,16 @@ function Character(obj){
 	};
 	this.updateAge = function(){
 		//Implement a method to take in the time and change the age of the pet
+		this.properties.age.minutes += 1;
+		if(this.properties.age.minutestes >= 60) {
+			this.properties.age.minutes -= 60;
+			this.properties.age.hours += 1;
+		}
+
+		if(this.properties.age.hours >= 24) {
+			this.properties.age.hours -= 24;
+			this.properties.age.days += 1;
+		}
 	};
 	this.changeStage = function(){
 		//Using the health as one variable, and another later implemented
@@ -96,8 +108,8 @@ function Character(obj){
 		//Decrement happiness
 	};
 	this.makeHungry = function(){
-		//Decrement hunger
-
+		//Increment hunger
+		this.properties.hunger += 1;
 	};
 	this.walkLeft = function(){
 		//walks left on the screen
