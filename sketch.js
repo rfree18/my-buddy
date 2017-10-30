@@ -84,7 +84,7 @@ function draw(){
 				foodmenu = false;
 			}
 		}
-		if(statusMenu){
+		else if(statusMenu){
 			displayStatusMenu();
 			if(backButton.display()){
 				statusMenu = false;

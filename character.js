@@ -7,7 +7,7 @@ function Character(obj){
 			dirty: 0,
 			love: 0,
 			stage: 0,
-			this.condition = {
+			condition: {
 				asleep: false,
 				sick: false,
 				mad: false,
@@ -38,8 +38,6 @@ function Character(obj){
 	this.walkTimer = 8;
 
 	this.wait = false;
-
-	this.intervalIds = this.setIntervals();
 
 	this.display = function(){
 		//Later on, display pet
@@ -218,4 +216,6 @@ function Character(obj){
 			}
 		}
 	}
+
+	this.intervalIds = this.setIntervals();
 }
