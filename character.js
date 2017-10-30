@@ -1,7 +1,7 @@
 function Character(obj){
 	if(obj === undefined) {
 		this.properties = {
-			name: "Billy",
+			name: "",
 			health: 50,
 			hunger: 0,
 			dirty: 0,
@@ -25,6 +25,12 @@ function Character(obj){
 	this.imgArr = [];
 	//The stage is similar to the age, but is changed at specific ages.  0 is the baby stage
 
+	this.condition = 0;
+	//condition can be:
+		//0 for fine
+		//1 for sick
+		//2 for mad
+		//-1 for dead
 
 	this.walkCycle = walkImg;
 	this.walkDir = 1;
@@ -71,7 +77,7 @@ function Character(obj){
 	this.updateAge = function(){
 		//Implement a method to take in the time and change the age of the pet
 		this.properties.age.minutes += 1;
-		if(this.properties.age.minutestes >= 60) {
+		if(this.properties.age.minutes >= 60) {
 			this.properties.age.minutes -= 60;
 			this.properties.age.hours += 1;
 		}
