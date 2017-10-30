@@ -55,6 +55,7 @@ function setup(){
 	myCanvas = createCanvas(750, 750);
 	myCanvas.parent("sketch-holder");
 	myChar = new Character();
+	myChar.setIntervals();
 	imageMode(CENTER);
 	buttons.push(new Button("Status", statusButton, 150, 525));
 	buttons.push(new Button("Toilet", toiletButton, 450, 525));
@@ -125,7 +126,7 @@ for(let i = 0; i < buttons.length; i++){
 	}
 }
 function displayStatusMenu(){
-	
+
 }
 function drawWindow(){
 	date = new Date();

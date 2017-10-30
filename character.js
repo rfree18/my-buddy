@@ -87,6 +87,10 @@ function Character(obj){
 			this.properties.age.days += 1;
 		}
 	};
+	this.setIntervals = function(){
+		//SET ALL INTERVALS FOR ALL OF THE HUNGER, HAPPINESS, ETC FUNCTIONS
+		
+	};
 	this.changeStage = function(){
 		//Using the health as one variable, and another later implemented
 		//"good care" variable, change the stage to the appropriate character
@@ -98,9 +102,11 @@ function Character(obj){
 	};
 	this.giveLove = function(){
 		//Add to the pet's love variable
+		this.love += 5;
 	};
 	this.giveHate = function(){
 		//Decrement the love variable
+		this.love -= 5;
 	};
 	this.feed = function(){
 		//Increment the hunger variable
