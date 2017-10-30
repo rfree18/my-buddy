@@ -7,6 +7,12 @@ function Character(obj){
 			dirty: 0,
 			love: 0,
 			stage: 0,
+			this.condition = {
+				asleep: false,
+				sick: false,
+				mad: false,
+				alive: true
+			},
 			age: {
 				hours: 0,
 				minutes: 0,
@@ -25,13 +31,6 @@ function Character(obj){
 	this.imgArr = [];
 	//The stage is similar to the age, but is changed at specific ages.  0 is the baby stage
 
-	this.condition = 0;
-	//condition can be:
-		//0 for fine
-		//1 for sick
-		//2 for mad
-		//-1 for dead
-
 	this.walkCycle = walkImg;
 	this.walkDir = 1;
 	this.walkUp = true;
@@ -40,7 +39,7 @@ function Character(obj){
 
 	this.wait = false;
 
-	this.intervalIds = [];
+	this.intervalIds = this.setIntervals();
 
 	this.display = function(){
 		//Later on, display pet
@@ -89,7 +88,24 @@ function Character(obj){
 	};
 	this.setIntervals = function(){
 		//SET ALL INTERVALS FOR ALL OF THE HUNGER, HAPPINESS, ETC FUNCTIONS
-		
+		var intids = {
+			//Update age every minute
+			ageInt: setInterval(this.updateAge(), 6000),
+			//Update hunger every 5 minutes
+			hungerInt: setInterval(this.makeHungry(), 30000),
+			//Check if love should be decremented every 5 minutes
+			loveInt: setInterval(this.giveHate(), 30000),
+			//Check if health should be decremented every 5 minutes
+			healthInt: setInterval(this.decrementHealth(), 30000),
+		};
+		return intids;
+
+
+	};
+	this.decrementHealth = function(){
+		//Subtract from health
+		//If health < 15, pet is ill
+		//If health is 0, pet is dead
 	};
 	this.changeStage = function(){
 		//Using the health as one variable, and another later implemented
@@ -103,25 +119,30 @@ function Character(obj){
 	this.giveLove = function(){
 		//Add to the pet's love variable
 		this.love += 5;
+		clearInterval(this.intervalIds.loveInt);
+		this.intervalIds.loveInt = setInterval(this.giveHate(), 60000);
 	};
 	this.giveHate = function(){
 		//Decrement the love variable
-		this.love -= 5;
+		this.love -= 2;
 	};
-	this.feed = function(){
+	this.feed = function(food){
 		//Increment the hunger variable
 		//Possibly give love if the food is good
 		//Possibly take love if the food is disliked by this character
-	};
-	this.makeHappy = function(){
-		//Increment the happiness
-	};
-	this.makeSad = function(){
-		//Decrement happiness
+		if(food === "apple"){
+			this.hunger += 10;
+			this.health += 5;
+		}
+		else if(food === "cookie"){
+			this.hunger += 10;
+			this.health -=5;
+			this.giveLove();
+		}
 	};
 	this.makeHungry = function(){
-		//Increment hunger
-		this.properties.hunger += 1;
+		//Decrement
+		this.properties.hunger -= 2;
 	};
 	this.cure = function(){
 		let i = random(2);
