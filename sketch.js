@@ -11,6 +11,7 @@ var foodButtonPic;
 var medecineButtonPic;
 var outsideButton;
 var toiletButton;
+var backButton;
 
 var date = new Date();
 var sunWindow;
@@ -24,6 +25,11 @@ var statusButton;
 var menuBG;
 
 var buttons = [];
+
+var foodmenu = false;
+var statusMenu = false;
+var clicked = false;
+
 function preload(){
 	walkImg = [];
 	for(let i = 1; i <= 5; i++){
@@ -38,11 +44,11 @@ function preload(){
 	toiletButton = loadImage("img/buttons/toilet.png");
 	loveButton = loadImage("img/buttons/love.png");
 	statusButton = loadImage("img/buttons/status.png");
-
 	nightWindow = loadImage("img/window/nightWindow.png");
 	sunWindow = loadImage("img/window/sunWindow.png");
 	sunriseWindow = loadImage("img/window/sunriseWindow.png");
 	sunsetWindow = loadImage("img/window/sunriseWindow.png");
+	backButton = new Button("Back", loadImage('img/buttons/back.png'), 75, 75);
 
 }
 function setup(){
@@ -55,7 +61,7 @@ function setup(){
 	buttons.push(new Button("Outside", outsideButton, 300, 675));
 	buttons.push(new Button("Love", loveButton, 150, 675));
 	buttons.push(new Button("Food", foodButtonPic, 300, 525));
-	buttons.push(new Button("Medecine", medecineButtonPic, 600, 525));
+	buttons.push(new Button("Medicine", medecineButtonPic, 600, 525));
 }
 function draw(){
 	background(0, 0, 100);
@@ -70,13 +76,56 @@ function draw(){
 		timer--;
 	}
 	else{
-		drawWindow();
-		image(bg, 375,375, 750, 750);
-		for(let i = 0; i < buttons.length; i++){
-			buttons[i].display();
+		if(foodmenu){
+			image(menuBG, 375, 375);
+			text("Pick a food to eat!", 375, 100);
+			if(backButton.display()){
+				foodmenu = false;
+			}
 		}
-		myChar.display();
+		if(statusMenu){
+			displayStatusMenu();
+			if(backButton.display()){
+				statusMenu = false;
+			}
+		}
+		else{
+			drawWindow();
+			image(bg, 375,375, 750, 750);
+
+			cycleButtons();
+			myChar.display();
+		}
 	}
+	clicked = false;
+}
+function cycleButtons(){
+for(let i = 0; i < buttons.length; i++){
+		if (buttons[i].display()){
+			//If the user is pressing a button...
+			if(buttons[i].name === "Food"){
+				foodmenu = true;
+			}
+			if(buttons[i].name === "Medicine"){
+				myChar.cure();
+			}
+			if(buttons[i].name === "Status"){
+				statusMenu = true;
+			}
+			if(buttons[i].name === "Toilet"){
+
+			}
+			if(buttons[i].name === "Outside"){
+
+			}
+			if(buttons[i].name === "Love"){
+
+			}
+		}
+	}
+}
+function displayStatusMenu(){
+	
 }
 function drawWindow(){
 	date = new Date();
@@ -92,6 +141,9 @@ function drawWindow(){
 	else if(date.getHours() >= 20 || date.getHours() < 8){
 		image(nightWindow, 172, 172);
 	}
+}
+function mousePressed(){
+	clicked = true;
 }
 function Button(name, img,x,y){
 	this.name = name;
@@ -111,11 +163,18 @@ function Button(name, img,x,y){
 	this.display = function(){
 		if(this.checkHovering() === false){
 			image(this.pic, this.xPos, this.yPos);
+			return false;
 		}
 		else{
 			fill(0);
 			rect(this.xPos-50, this.yPos-50, 100, 100);
 			image(this.pic, this.xPos, this.yPos);
+			if(clicked){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 	}
 }

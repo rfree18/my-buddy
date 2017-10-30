@@ -117,6 +117,15 @@ function Character(obj){
 		//Increment hunger
 		this.properties.hunger += 1;
 	};
+	this.cure = function(){
+		let i = random(2);
+		if(i <= 1){
+			//still sick
+		}
+		else{
+			//cured!
+		}
+	}
 	this.walkLeft = function(){
 		//walks left on the screen
 		if(this.walkUp){
