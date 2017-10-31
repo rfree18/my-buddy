@@ -186,8 +186,10 @@ function Character(obj){
 		//Implement to say hi when the user speaks the words "hello" or "hi" into the mic
 	};
 	this.poop = function(){
-		this.isPooping = true;
-		this.frameTimer = 130;
+		if(!this.properties.condition.sick && this.properties.condition.alive){
+			this.isPooping = true;
+			this.frameTimer = 130;
+		}
 	};
 	this.updateAge = function(){
 		console.log(date.getMinutes());
@@ -246,6 +248,11 @@ function Character(obj){
 		//Decrement
 		this.properties.hunger -= 5;
 	};
+	this.makeSick = function(){
+		this.frameTimer = 20;
+		this.properties.condition.sick = true;
+
+	}
 	this.cure = function(){
 		if(this.properties.condition.sick === true){
 			this.medAnimation();
