@@ -24,19 +24,34 @@ var nightWindow;
 var sunriseWindow;
 var sunsetWindow;
 
+var foodAni = false;
+var foodAniTimer = 0;
+var charEatFr = 0;
+
 var loveButton;
 var statusButton;
 
 var menuBG;
+var firstFeed = false;
+
+//True for feed, false for anger
+var feedOrAnger = true;
 
 var buttons = [];
 var poopOnScreen = [];
+var foodButtons = [];
+var appleIcon;
+var cookieIcon;
+var foodName;
+
+var appleArr = [];
+var cookieArr = [];
 
 var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
 
-var ping;
+var clickSound;
 
 var syringes;
 function preload(){
@@ -59,9 +74,16 @@ function preload(){
 	sunsetWindow = loadImage("img/window/sunriseWindow.png");
 	backButton = new Button("Back", loadImage('img/buttons/back.png'), 75, 75);
 
+	appleIcon = (loadImage("img/food/appleIcon.png"));
+	cookieIcon = (loadImage("img/food/cookieIcon.png"));
 	eatImg = [];
 	sickImg = [];
 	madImg = [];
+
+	for(let i = 0; i < 4; i++){
+		appleArr.push(loadImage("img/food/apple" + i + ".png"));
+		cookieArr.push(loadImage("img/food/cookie" + i + ".png"));
+	}
 
 	for(let i = 1; i < 3; i++){
 		eatImg.push(loadImage("img/character_imgs/blueBaby/eat" + i + ".png"));
@@ -70,7 +92,7 @@ function preload(){
 	}
 
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
-	ping = loadSound("sound/ping.ogg");
+	//clickSound = loadSound("sound/pong.ogg");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -84,6 +106,9 @@ function setup(){
 	buttons.push(new Button("Love", loveButton, 150, 675));
 	buttons.push(new Button("Food", foodButtonPic, 300, 525));
 	buttons.push(new Button("Medicine", medecineButtonPic, 600, 525));
+
+	foodButtons.push(new Button("Apple", appleIcon, 250, 400));
+	foodButtons.push(new Button("Cookie", cookieIcon, 500, 400))
 }
 function draw(){
 	background(0, 0, 100);
@@ -99,10 +124,36 @@ function draw(){
 	}
 	else{
 		if(foodmenu){
+			console.log("foodmenu");
 			image(menuBG, 375, 375);
 			text("Pick a food to eat!", 375, 100);
+			if(cycleFoodButtons()){
+				foodmenu = false;
+				foodAni = true;
+				foodAniTimer = 400;
+				firstFeed = true;
+			}
 			if(backButton.display()){
 				foodmenu = false;
+			}
+		}
+		else if(foodAni){
+			drawWindow();
+			image(bg, 375,375, 750, 750);
+			if(firstFeed){
+				feedOrAnger = myChar.feed(foodName);
+				firstFeed = false;
+			}
+			if(feedOrAnger){
+				foodAnimation();
+			}
+			else{
+				angerAnimation();
+			}
+			foodAniTimer--;
+			if(foodAniTimer === 0){
+				foodAni = false;
+				foodmenu = true;
 			}
 		}
 		else if(statusMenu){
@@ -145,6 +196,49 @@ for(let i = 0; i < buttons.length; i++){
 			}
 		}
 	}
+}
+function cycleFoodButtons(){
+	for(let i = 0; i < foodButtons.length; i++){
+		if(foodButtons[i].display()){
+			foodName = foodButtons[i].name;
+			return true;
+		}
+	}
+}
+function foodAnimation(){
+	if(foodName === "Apple"){
+		if(foodAniTimer > 300){
+			image(appleArr[0], 425, 375);
+		}
+		else if(foodAniTimer > 200){
+			image(appleArr[1], 425, 375);
+		}
+		else if(foodAniTimer > 100){
+			image(appleArr[2], 425, 375);
+		}
+		else if(foodAniTimer > 50){
+			image(appleArr[3], 425, 375);
+		}
+		else{
+			
+		}
+
+	}
+	else if(foodName === "Cookie"){
+
+	}
+	image(eatImg[charEatFr], 300, myChar.yPos);
+	if(foodAniTimer % 15 === 0){
+		if(charEatFr === 0){
+			charEatFr = 1;
+		}
+		else{
+			charEatFr = 0;
+		}
+	}
+}
+function angerAnimation(){
+
 }
 function displayStatusMenu(){
 
@@ -190,7 +284,7 @@ function Button(name, img,x,y){
 		else{
 			fill(0);
 			rect(this.xPos-50, this.yPos-50, 100, 100);
-			ping.play();
+			//clickSound.play();
 			image(this.pic, this.xPos, this.yPos);
 			if(clicked){
 				return true;

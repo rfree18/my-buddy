@@ -25,7 +25,6 @@ function Character(obj){
 
 	this.xPos = 375;
 	this.yPos = 375;
-	this.properties.condition.sick = true;
 
 	//The array of images that represent the current character
 	this.imgArr = [];
@@ -39,6 +38,7 @@ function Character(obj){
 	this.walkTimer = 8;
 	this.frameTimer = 20;
 	this.frameState = 0;
+	this.maxHealth = 100;
 
 	this.wait = false;
 
@@ -163,14 +163,20 @@ function Character(obj){
 		//Increment the hunger variable
 		//Possibly give love if the food is good
 		//Possibly take love if the food is disliked by this character
-		if(food === "apple"){
-			this.properties.hunger += 10;
-			this.properties.health += 5;
-		}
-		else if(food === "cookie"){
-			this.hunger += 10;
-			this.health -=5;
-			this.giveLove();
+		if(this.properties.hunger < 3999){
+			if(food === "Apple"){
+				this.properties.hunger += 10;
+				this.properties.health += 5;
+				return true;
+			}
+			else if(food === "Cookie"){
+				this.hunger += 10;
+				this.health -=5;
+				this.giveLove();
+				return true;
+			}
+		} else{
+			return false;
 		}
 	};
 	this.makeHungry = function(){
