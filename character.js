@@ -25,52 +25,87 @@ function Character(obj){
 
 	this.xPos = 375;
 	this.yPos = 375;
-
+	this.properties.condition.sick = true;
 
 	//The array of images that represent the current character
 	this.imgArr = [];
 	//The stage is similar to the age, but is changed at specific ages.  0 is the baby stage
 
+	let prop = this.properties;
 	this.walkCycle = walkImg;
 	this.walkDir = 1;
 	this.walkUp = true;
 	this.walkCycleCounter = 0;
 	this.walkTimer = 8;
+	this.frameTimer = 20;
+	this.frameState = 0;
 
 	this.wait = false;
 
 	this.display = function(){
 		//Later on, display pet
-		if(this.wait){
-			image(petImg, this.xPos, this.yPos);
-			this.walkTimer--;
-			if(this.walkTimer == 0){
-				this.wait = false;
-				this.walkTimer = 8;
+		if(!this.properties.condition.alive){
+
+		}
+		else if(this.properties.condition.asleep){
+
+		}
+		else if(this.properties.condition.sick){
+			if(this.frameState === 0){
+				image(sickImg[0], 375, this.yPos);
+				this.frameTimer--;
+				if(this.frameTimer === 0){
+					this.frameState = 1;
+					this.frameTimer = 20;
+				}
+			}
+			else{
+				image(sickImg[1], 375, this.yPos);
+				this.frameTimer--;
+				if(this.frameTimer === 0){
+					this.frameState = 0;
+					this.frameTimer = 20;
+				}
 			}
 		}
-		else if(this.walkDir == 1){
-			this.walkLeft();
-			this.xPos--;
-			if(this.xPos <= 100){
-				this.walkDir = 0;
-				this.wait = true;
-				this.walkTimer = 10;
-			}
+		else if(this.properties.condition.mad){
+
 		}
-		else if(this.walkDir == 0){
-			this.walkRight();
-			this.xPos++
-			if(this.xPos >= 650){
-				this.walkDir = 1;
-				this.wait = true;
-				this.walkTimer = 10;
+		else{
+			if(this.wait){
+				image(petImg, this.xPos, this.yPos);
+				this.walkTimer--;
+				if(this.walkTimer == 0){
+					this.wait = false;
+					this.walkTimer = 8;
+				}
+			}
+			else if(this.walkDir == 1){
+				this.walkLeft();
+				this.xPos--;
+				if(this.xPos <= 100){
+					this.walkDir = 0;
+					this.wait = true;
+					this.walkTimer = 10;
+				}
+			}
+			else if(this.walkDir == 0){
+				this.walkRight();
+				this.xPos++
+				if(this.xPos >= 650){
+					this.walkDir = 1;
+					this.wait = true;
+					this.walkTimer = 10;
+				}
 			}
 		}
 	};
 	this.sayHi = function(){
 		//Implement to say hi when the user speaks the words "hello" or "hi" into the mic
 	};
+	this.poop = function(){
+
+	}
 	this.updateAge = function(){
 		//Implement a method to take in the time and change the age of the pet
 		this.properties.age.minutes += 1;
@@ -88,13 +123,13 @@ function Character(obj){
 		//SET ALL INTERVALS FOR ALL OF THE HUNGER, HAPPINESS, ETC FUNCTIONS
 		var intids = {
 			//Update age every minute
-			ageInt: setInterval(this.updateAge(), 6000),
+			ageInt: setInterval(this.updateAge(), 60000),
 			//Update hunger every 5 minutes
-			hungerInt: setInterval(this.makeHungry(), 30000),
+			hungerInt: setInterval(this.makeHungry(), 300000),
 			//Check if love should be decremented every 5 minutes
-			loveInt: setInterval(this.giveHate(), 30000),
+			loveInt: setInterval(this.giveHate(), 300000),
 			//Check if health should be decremented every 5 minutes
-			healthInt: setInterval(this.decrementHealth(), 30000),
+			healthInt: setInterval(this.decrementHealth(), 300000),
 		};
 		return intids;
 
@@ -116,21 +151,21 @@ function Character(obj){
 	};
 	this.giveLove = function(){
 		//Add to the pet's love variable
-		this.love += 5;
+		this.properties.love += 5;
 		clearInterval(this.intervalIds.loveInt);
-		this.intervalIds.loveInt = setInterval(this.giveHate(), 60000);
+		this.intervalIds.loveInt = setInterval(this.giveHate(), 600000);
 	};
 	this.giveHate = function(){
 		//Decrement the love variable
-		this.love -= 2;
+		this.properties.love -= 2;
 	};
 	this.feed = function(food){
 		//Increment the hunger variable
 		//Possibly give love if the food is good
 		//Possibly take love if the food is disliked by this character
 		if(food === "apple"){
-			this.hunger += 10;
-			this.health += 5;
+			this.properties.hunger += 10;
+			this.properties.health += 5;
 		}
 		else if(food === "cookie"){
 			this.hunger += 10;
@@ -143,13 +178,24 @@ function Character(obj){
 		this.properties.hunger -= 2;
 	};
 	this.cure = function(){
-		let i = random(2);
-		if(i <= 1){
-			//still sick
+		if(this.properties.condition.sick === true){
+			this.medAnimation();
 		}
-		else{
-			//cured!
+		let f = function(){
+			let i = random(2);
+			if(i >= 1){
+				return false;
+			}
+			else{
+				return true;
+			}
 		}
+		if(f()){
+			this.properties.condition.sick = false;
+		}
+	}
+	this.medAnimation = function(){
+
 	}
 	this.walkLeft = function(){
 		//walks left on the screen

@@ -4,6 +4,11 @@
 */
 var walkImg;
 var petImg;
+var sickImg;
+var eatImg;
+var madImg;
+var charPoopingImg;
+
 var bg;
 var timer =200;
 var myChar;
@@ -25,11 +30,13 @@ var statusButton;
 var menuBG;
 
 var buttons = [];
+var poopOnScreen = [];
 
 var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
 
+var syringes;
 function preload(){
 	walkImg = [];
 	for(let i = 1; i <= 5; i++){
@@ -50,6 +57,17 @@ function preload(){
 	sunsetWindow = loadImage("img/window/sunriseWindow.png");
 	backButton = new Button("Back", loadImage('img/buttons/back.png'), 75, 75);
 
+	eatImg = [];
+	sickImg = [];
+	madImg = [];
+
+	for(let i = 1; i < 3; i++){
+		eatImg.push(loadImage("img/character_imgs/blueBaby/eat" + i + ".png"));
+		sickImg.push(loadImage("img/character_imgs/blueBaby/sick" + i + ".png"));
+		madImg.push(loadImage("img/character_imgs/blueBaby/mad" + i + ".png"));
+	}
+
+	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
