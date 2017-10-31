@@ -44,11 +44,16 @@ var getCharacter = function(user) {
     if (doc.data().creature) {
       myChar = new Character(doc.data().creature);
     } else {
+      myChar = new Character();
       sendCharacter(user);
     }
   }).catch(function(error) {
     sendCharacter(user);
   });
+}
+
+var saveGame = function() {
+  sendCharacter(currUser);
 }
 
 var sendCharacter = function(user) {
