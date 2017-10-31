@@ -54,8 +54,6 @@ var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
 
-var clickSound;
-
 var syringes;
 function preload(){
 	walkImg = [];
@@ -105,7 +103,6 @@ function preload(){
 
 
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
-	clickSound = loadSound("sound/pong.ogg");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -187,7 +184,6 @@ function draw(){
 function cycleButtons(){
 for(let i = 0; i < buttons.length; i++){
 		if (buttons[i].display()){
-			clickSound.play();
 			//If the user is pressing a button...
 			if(buttons[i].name === "Food"){
 				foodmenu = true;
