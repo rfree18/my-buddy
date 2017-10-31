@@ -30,6 +30,7 @@ function Character(obj){
 	//The stage is similar to the age, but is changed at specific ages.  0 is the baby stage
 
 	this.isPooping = false;
+	this.isBeingMedicated = false;
 	this.walkCycle = walkImg;
 	this.walkDir = 1;
 	this.walkUp = true;
@@ -40,6 +41,7 @@ function Character(obj){
 	this.maxHealth = 100;
 	this.maxHunger = 50;
 
+	this.noAni = false;
 	this.wait = false;
 
 	this.display = function(){
@@ -49,6 +51,46 @@ function Character(obj){
 		}
 		else if(this.properties.condition.asleep){
 
+		}
+		else if(this.isBeingMedicated){
+			image(charPoopImg, this.xPos, this.yPos);
+			if(this.frameTimer > 80){
+				image(syringes[0], 420, 330);
+			}
+			else if(this.frameTimer > 60){
+				image(syringes[1], 420, 330);
+			}
+			else if(this.frameTimer > 40){
+				image(syringes[2], 420, 330);
+			}
+			else if(this.frameTimer > 20){
+				image(syringes[3], 420, 330);
+			}
+			else if(this.frameTimer > 0){
+				image(syringes[4], 420, 330);
+			}
+			else if(this.frameTimer === 0){
+				this.isBeingMedicated = false;
+			}
+			this.frameTimer--;
+		}
+		else if(this.noAni){
+			if(this.frameState === 0){
+				image(madImg[0], 375, this.yPos);
+				this.frameTimer--;
+				if(this.frameTimer % 15 === 0){
+					this.frameState = 1;
+				}
+			} else{
+				image(madImg[1], 375, this.yPos);
+				this.frameTimer--;
+				if(this.frameTimer % 15 === 0){
+					this.frameState = 0;
+				}
+			}
+			if(this.frameTimer === 0){
+				this.noAni = false;
+			}
 		}
 		else if(this.isPooping){
 			if(this.frameState === 0){
@@ -120,18 +162,23 @@ function Character(obj){
 		}
 	};
 	this.setIntervals = function(){
+		a = setInterval(()=>{this.updateAge()}, 60000);
+		b = setInterval(()=>{this.makeHungry()}, 300000);
+		c = setInterval(()=>{this.giveHate()}, 300000);
+		d = setInterval(()=>{this.decrementHealth()}, 300000);
+		e = setInterval(()=>{this.poop()}, 10000);
 		//SET ALL INTERVALS FOR ALL OF THE HUNGER, HAPPINESS, ETC FUNCTIONS
 		var intids = {
 			//Update age every minute
-			ageInt: setInterval(function(){myChar.updateAge()}, 60000),
+			ageInt: a,
 			//Update hunger every 5 minutes
-			hungerInt: setInterval(function(){myChar.makeHungry()}, 300000),
+			hungerInt: b,
 			//Check if love should be decremented every 5 minutes
-			loveInt: setInterval(function(){myChar.giveHate()}, 300000),
+			loveInt: c,
 			//Check if health should be decremented every 5 minutes
-			healthInt: setInterval(function(){myChar.decrementHealth()}, 300000),
+			healthInt: d,
 			//Poop every so-often
-			poopInt: setInterval(function(){myChar.poop()}, 10000),
+			poopInt: e,
 		};
 		return intids;
 	};
@@ -143,6 +190,7 @@ function Character(obj){
 		this.frameTimer = 130;
 	};
 	this.updateAge = function(){
+		console.log(date.getMinutes());
 		//Implement a method to take in the time and change the age of the pet
 		this.properties.age.minutes += 1;
 		if(this.properties.age.minutes >= 60) {
@@ -168,7 +216,7 @@ function Character(obj){
 		//Add to the pet's love variable
 		this.properties.love += 5;
 		clearInterval(this.intervalIds.loveInt);
-		this.intervalIds.loveInt = setInterval(this.giveHate(), 600000);
+		this.intervalIds.loveInt = setInterval(()=>{this.giveHate()}, 600000);
 	};
 	this.giveHate = function(){
 		//Decrement the love variable
@@ -201,22 +249,30 @@ function Character(obj){
 	this.cure = function(){
 		if(this.properties.condition.sick === true){
 			this.medAnimation();
-		}
-		let f = function(){
-			let i = random(2);
-			if(i >= 1){
-				return false;
+			let f = function(){
+				let i = random(2);
+				if(i >= 1){
+					return false;
+				}
+				else{
+					return true;
+				}
 			}
-			else{
-				return true;
+			if(f()){
+				this.properties.condition.sick = false;
 			}
 		}
-		if(f()){
-			this.properties.condition.sick = false;
+		else{
+			this.angerAnimation();
 		}
 	}
+	this.angerAnimation = function(){
+		this.frameTimer = 100;
+		this.noAni = true;
+	}
 	this.medAnimation = function(){
-
+		this.isBeingMedicated = true;
+		this.frameTimer = 120;
 	}
 	this.walkLeft = function(){
 		//walks left on the screen

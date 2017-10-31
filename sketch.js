@@ -98,8 +98,14 @@ function preload(){
 		madImg.push(loadImage("img/character_imgs/blueBaby/mad" + i + ".png"));
 	}
 
+	syringes = [];
+	for(let i = 1; i < 6; i++){
+		syringes.push(loadImage("img/animations/syringe/" + i + ".png"));
+	}
+
+
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
-	//clickSound = loadSound("sound/pong.ogg");
+	clickSound = loadSound("sound/pong.ogg");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -154,7 +160,8 @@ function draw(){
 				foodAnimation();
 			}
 			else{
-				angerAnimation();
+				foodAni = false;
+				myChar.angerAnimation();
 			}
 			foodAniTimer--;
 			if(foodAniTimer === 0){
@@ -182,6 +189,7 @@ function draw(){
 function cycleButtons(){
 for(let i = 0; i < buttons.length; i++){
 		if (buttons[i].display()){
+			clickSound.play();
 			//If the user is pressing a button...
 			if(buttons[i].name === "Food"){
 				foodmenu = true;
