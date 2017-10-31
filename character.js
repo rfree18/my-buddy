@@ -204,6 +204,9 @@ function Character(obj){
 			this.properties.age.hours -= 24;
 			this.properties.age.days += 1;
 		}
+
+		// Auto-save character
+		saveGame();
 	};
 	this.decrementHealth = function(){
 		//Subtract from health
