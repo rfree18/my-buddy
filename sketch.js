@@ -36,6 +36,8 @@ var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
 
+var ping;
+
 var syringes;
 function preload(){
 	walkImg = [];
@@ -68,6 +70,7 @@ function preload(){
 	}
 
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
+	ping = loadSound("sound/ping.ogg");
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -187,6 +190,7 @@ function Button(name, img,x,y){
 		else{
 			fill(0);
 			rect(this.xPos-50, this.yPos-50, 100, 100);
+			ping.play();
 			image(this.pic, this.xPos, this.yPos);
 			if(clicked){
 				return true;
