@@ -47,6 +47,9 @@ var foodName;
 var appleArr = [];
 var cookieArr = [];
 
+var poopImg1;
+var poopImg2;
+
 var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
@@ -73,6 +76,10 @@ function preload(){
 	sunriseWindow = loadImage("img/window/sunriseWindow.png");
 	sunsetWindow = loadImage("img/window/sunriseWindow.png");
 	backButton = new Button("Back", loadImage('img/buttons/back.png'), 75, 75);
+	charPoopImg = loadImage("img/character_imgs/blueBaby/pooping.png");
+
+	poopImg1 = loadImage("img/poop1.png");
+	poopImg2 = loadImage("img/poop2.png");
 
 	appleIcon = (loadImage("img/food/appleIcon.png"));
 	cookieIcon = (loadImage("img/food/cookieIcon.png"));
@@ -124,7 +131,6 @@ function draw(){
 	}
 	else{
 		if(foodmenu){
-			console.log("foodmenu");
 			image(menuBG, 375, 375);
 			text("Pick a food to eat!", 375, 100);
 			if(cycleFoodButtons()){
@@ -165,6 +171,7 @@ function draw(){
 		else{
 			drawWindow();
 			image(bg, 375,375, 750, 750);
+			drawPoop();
 
 			cycleButtons();
 			myChar.display();
@@ -186,7 +193,7 @@ for(let i = 0; i < buttons.length; i++){
 				statusMenu = true;
 			}
 			if(buttons[i].name === "Toilet"){
-
+				clearPoop();
 			}
 			if(buttons[i].name === "Outside"){
 
@@ -196,6 +203,14 @@ for(let i = 0; i < buttons.length; i++){
 			}
 		}
 	}
+}
+function clearPoop(){
+	poopOnScreen = [];
+}
+function drawPoop(){
+	poopOnScreen.forEach((p)=>{
+		p.display();
+	});
 }
 function cycleFoodButtons(){
 	for(let i = 0; i < foodButtons.length; i++){
@@ -208,24 +223,37 @@ function cycleFoodButtons(){
 function foodAnimation(){
 	if(foodName === "Apple"){
 		if(foodAniTimer > 300){
-			image(appleArr[0], 425, 375);
+			image(appleArr[0], 425, 400, 100, 100);
 		}
 		else if(foodAniTimer > 200){
-			image(appleArr[1], 425, 375);
+			image(appleArr[1], 425, 400, 100, 100);
 		}
 		else if(foodAniTimer > 100){
-			image(appleArr[2], 425, 375);
+			image(appleArr[2], 425, 400, 100, 100);
 		}
-		else if(foodAniTimer > 50){
-			image(appleArr[3], 425, 375);
+		else if(foodAniTimer > 25){
+			image(appleArr[3], 425, 400, 100, 100);
 		}
 		else{
-			
-		}
 
+		}
 	}
 	else if(foodName === "Cookie"){
+		if(foodAniTimer > 300){
+			image(cookieArr[0], 425, 375);
+		}
+		else if(foodAniTimer > 200){
+			image(cookieArr[1], 425, 375);
+		}
+		else if(foodAniTimer > 100){
+			image(cookieArr[2], 425, 375);
+		}
+		else if(foodAniTimer > 25){
+			image(cookieArr[3], 425, 375);
+		}
+		else{
 
+		}
 	}
 	image(eatImg[charEatFr], 300, myChar.yPos);
 	if(foodAniTimer % 15 === 0){
@@ -291,6 +319,31 @@ function Button(name, img,x,y){
 			}
 			else{
 				return false;
+			}
+		}
+	}
+}
+function Poop(x, y, sz){
+	this.xPos = x;
+	this.yPos = y+50;
+	this.size = sz;
+	this.counter = 20;
+	this.state = 0;
+	this.display = function(){
+		if(this.state === 0){
+			image(poopImg1, this.xPos, this.yPos, this.size, this.size);
+			this.counter--;
+			if(this.counter === 0){
+				this.counter = 20;
+				this.state = 1;
+			}
+		}
+		else{
+			image(poopImg2, this.xPos, this.yPos, this.size, this.size);
+			this.counter--;
+			if(this.counter === 0){
+				this.counter = 20;
+				this.state = 0;
 			}
 		}
 	}
