@@ -30,6 +30,8 @@ var charEatFr = 0;
 
 var loveButton;
 var statusButton;
+var infoButton;
+var saveButton;
 
 var menuBG;
 var firstFeed = false;
@@ -79,6 +81,9 @@ function preload(){
 	poopImg1 = loadImage("img/poop1.png");
 	poopImg2 = loadImage("img/poop2.png");
 
+	infoButton = loadImage("img/buttons/info.png");
+	saveButton = loadImage("img/buttons/save.png");
+
 	appleIcon = (loadImage("img/food/appleIcon.png"));
 	cookieIcon = (loadImage("img/food/cookieIcon.png"));
 	eatImg = [];
@@ -114,6 +119,8 @@ function setup(){
 	buttons.push(new Button("Love", loveButton, 150, 675));
 	buttons.push(new Button("Food", foodButtonPic, 300, 525));
 	buttons.push(new Button("Medicine", medecineButtonPic, 600, 525));
+	buttons.push(new Button("Info", infoButton, 450, 675));
+	buttons.push(new Button("Save", saveButton, 600, 675));
 
 	foodButtons.push(new Button("Apple", appleIcon, 250, 400));
 	foodButtons.push(new Button("Cookie", cookieIcon, 500, 400))
@@ -202,6 +209,13 @@ for(let i = 0; i < buttons.length; i++){
 			}
 			if(buttons[i].name === "Love"){
 
+			}
+			if(buttons[i].name === "Info"){
+
+			}
+			if(buttons[i].name === "Save"){
+				saveGame();
+				console.log("Game has been saved at " + date.toString());
 			}
 		}
 	}
