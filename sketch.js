@@ -8,6 +8,7 @@ var sickImg;
 var eatImg;
 var madImg;
 var charPoopingImg;
+var charDeadImg = [];
 
 var bg;
 var timer =200;
@@ -39,6 +40,8 @@ var firstFeed = false;
 //True for feed, false for anger
 var feedOrAnger = true;
 
+var resetButton;
+
 var buttons = [];
 var poopOnScreen = [];
 var foodButtons = [];
@@ -56,12 +59,56 @@ var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
 
+//Sounds!
+var saveSound;
+var bgSong;
+var bubbleSound;
+var noSound;
+var failSound;
+var poopSound;
+var sadSound;
+var menuSound;
+var nomSound;
+var healSound;
+var bgDeadSong;
+var bgDeadSongBegin;
+
+var day;
+var night;
+var sunset;
+var sunrise;
+var isOutside = false;
+
 var syringes;
+var ghosties;
+
 function preload(){
+
+	//Load in sounds
+	saveSound = loadSound("sound/save.mp3");
+	bgSong = loadSound("sound/bgSong.mp3");
+	bubbleSound = loadSound("sound/bubbles.mp3");
+	noSound = loadSound("sound/no.mp3");
+	failSound = loadSound("sound/fail.mp3");
+	poopSound = loadSound("sound/poop.mp3");
+	sadSound = loadSound("sound/sad.mp3");
+	menuSound = loadSound("sound/menu.mp3");
+	nomSound = loadSound("sound/nom.mp3");
+	healSound = loadSound("sound/potion.mp3");
+	bgDeadSong = loadSound("sound/bgDeadSong.mp3");
+	bgDeadSongBegin = loadSound("sound/bgDeadSongBeginning.mp3");
+	resetButton = new Button("Reset", loadImage('img/buttons/reset.png'), 650, 100);
+
 	walkImg = [];
 	for(let i = 1; i <= 5; i++){
 		walkImg.push(loadImage("img/character_imgs/blueBaby/walk/walk" + i + ".png"));
 	}
+	//Load in images
+	day = loadImage("img/outside/day.png");
+	night = loadImage("img/outside/night.png");
+	sunset = loadImage("img/outside/sunset.png");
+	sunrise = loadImage("img/outside/sunrise.png");
+
 	petImg = loadImage("img/character_imgs/blueBaby/babyFWD.png");
 	bg = loadImage("img/defaultBG.png");
 	menuBG = loadImage("img/menuBG.png");
@@ -74,7 +121,7 @@ function preload(){
 	nightWindow = loadImage("img/window/nightWindow.png");
 	sunWindow = loadImage("img/window/sunWindow.png");
 	sunriseWindow = loadImage("img/window/sunriseWindow.png");
-	sunsetWindow = loadImage("img/window/sunriseWindow.png");
+	sunsetWindow = loadImage("img/window/sunsetWindow.png");
 	backButton = new Button("Back", loadImage('img/buttons/back.png'), 75, 75);
 	charPoopImg = loadImage("img/character_imgs/blueBaby/pooping.png");
 
@@ -106,8 +153,12 @@ function preload(){
 		syringes.push(loadImage("img/animations/syringe/" + i + ".png"));
 	}
 
-
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
+
+	for(let i = 1; i < 11; i++){
+		charDeadImg.push(loadImage("img/character_imgs/blueBaby/death/" + i + ".png"));
+	}
+
 }
 function setup(){
 	myCanvas = createCanvas(750, 750);
@@ -124,6 +175,13 @@ function setup(){
 
 	foodButtons.push(new Button("Apple", appleIcon, 250, 400));
 	foodButtons.push(new Button("Cookie", cookieIcon, 500, 400))
+	failSound.setVolume(.5);
+	menuSound.setVolume(.5);
+	nomSound.setVolume(.25);
+	bgSong.setVolume(.05);
+	bgDeadSong.setVolume(.05);
+	bgDeadSongBegin.setVolume(.05);
+	bgSong.loop();
 }
 function draw(){
 	background(0, 0, 100);
@@ -138,6 +196,10 @@ function draw(){
 		timer--;
 	}
 	else{
+		if(myChar.properties.condition.alive === false && bgSong.isPlaying()){
+			bgSong.stop();
+			bgDeadSongBegin.play();
+		}
 		if(foodmenu){
 			image(menuBG, 375, 375);
 			text("Pick a food to eat!", 375, 100);
@@ -148,6 +210,7 @@ function draw(){
 				firstFeed = true;
 			}
 			if(backButton.display()){
+				failSound.play();
 				foodmenu = false;
 			}
 		}
@@ -174,19 +237,49 @@ function draw(){
 		else if(statusMenu){
 			displayStatusMenu();
 			if(backButton.display()){
+				failSound.play();
 				statusMenu = false;
 			}
 		}
 		else{
 			drawWindow();
-			image(bg, 375,375, 750, 750);
+			if(isOutside){
+				drawOutdoorBG();
+				if(backButton.display()){
+					isOutside = false;
+				}
+			}
+			else{
+				image(bg, 375,375, 750, 750);
+			}
 			drawPoop();
-
-			cycleButtons();
+			if(myChar.properties.condition.alive === true){
+				cycleButtons();
+			}
+			else{
+				if(resetButton.display()){
+					myChar.reset();
+				}
+			}
 			myChar.display();
 		}
 	}
 	clicked = false;
+}
+function drawOutdoorBG(){
+	date = new Date();
+	if(date.getHours() >= 6 && date.getHours() < 9){
+		image(sunrise, 375, 375);
+	}
+	else if(date.getHours() >= 9 && date.getHours() < 18){
+		image(day, 375, 375);
+	}
+	else if(date.getHours() >= 18 && date.getHours() < 20){
+		image(sunset, 375, 375);
+	}
+	else if(date.getHours() >= 20 || date.getHours() < 8){
+		image(night, 375, 375);
+	}
 }
 function cycleButtons(){
 	for(let i = 0; i < buttons.length; i++){
@@ -194,27 +287,34 @@ function cycleButtons(){
 			//If the user is pressing a button...
 			if(buttons[i].name === "Food"){
 				foodmenu = true;
+				menuSound.play();
+				isOutside = false;
 			}
 			if(buttons[i].name === "Medicine"){
 				myChar.cure();
+				isOutside = false;
 			}
 			if(buttons[i].name === "Status"){
 				statusMenu = true;
+				menuSound.play();
 			}
 			if(buttons[i].name === "Toilet"){
 				clearPoop();
+				bubbleSound.play();
 			}
 			if(buttons[i].name === "Outside"){
-
+				menuSound.play();
+				isOutside = true;
 			}
 			if(buttons[i].name === "Love"){
 
 			}
 			if(buttons[i].name === "Info"){
-
+				menuSound.play();
 			}
 			if(buttons[i].name === "Save"){
 				saveGame();
+				saveSound.play();
 				console.log("Game has been saved at " + date.toString());
 			}
 		}
@@ -274,6 +374,7 @@ function foodAnimation(){
 	image(eatImg[charEatFr], 300, myChar.yPos);
 	if(foodAniTimer % 15 === 0){
 		if(charEatFr === 0){
+			nomSound.play();
 			charEatFr = 1;
 		}
 		else{

@@ -48,7 +48,7 @@ var getCharacter = function(user) {
       sendCharacter(user);
     }
   }).catch(function(error) {
-    sendCharacter(user);
+    myChar = new Character();
   });
 }
 

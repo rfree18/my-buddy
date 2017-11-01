@@ -24,13 +24,56 @@ function Character(obj){
 	this.display = function(){
 		//Later on, display pet
 		if(!this.properties.condition.alive){
+			if(!bgDeadSongBegin.isPlaying() && !bgDeadSong.isPlaying()){
+				bgDeadSong.loop();
+			}
+			if(this.frameTimer > 280){
+				image(charDeadImg[0], 375, this.yPos);
+			}
+			else if(this.frameTimer > 260){
+				image(charDeadImg[1], 375, this.yPos);
+			}
+			else if(this.frameTimer > 240){
+				image(charDeadImg[2], 375, this.yPos);
+			}
+			else if(this.frameTimer > 220){
+				image(charDeadImg[3], 375, this.yPos);
+			}
+			else if(this.frameTimer > 200){
+				image(charDeadImg[4], 375, this.yPos);
+			}
+			else if(this.frameTimer > 180){
+				image(charDeadImg[5], 375, this.yPos);
+			}
+			else if(this.frameTimer > 160){
+				image(charDeadImg[6], 375, this.yPos);
+			}
+			else if(this.frameTimer > 140){
+				image(charDeadImg[7], 375, this.yPos);
+			}
+			else if(this.frameTimer > 120){
+				image(charDeadImg[8], 375, this.yPos);
+			}
+			else if(this.frameTimer > 40){
+				image(charDeadImg[9], 375, this.yPos);
+			}
+			else if(this.frameTimer > 20){
+				image(charDeadImg[9], 375, this.yPos);
+			}
+			else{
+				image(charDeadImg[9], 375, this.yPos);
+			}
+			this.frameTimer--;
+			if(this.frameTimer === 0){
+				this.frameTimer = 40;
+			}
 
 		}
 		else if(this.properties.condition.asleep){
 
 		}
 		else if(this.isBeingMedicated){
-			image(charPoopImg, this.xPos, this.yPos);
+			image(charPoopImg, 375, this.yPos);
 			if(this.frameTimer > 80){
 				image(syringes[0], 420, 330);
 			}
@@ -85,6 +128,7 @@ function Character(obj){
 			}
 			if(this.frameTimer === 0){
 				this.isPooping = false;
+				poopSound.play();
 				poopOnScreen.push(new Poop(this.xPos, this.yPos, random(60) + 50));
 			}
 		}
@@ -169,7 +213,6 @@ function Character(obj){
 		}
 	};
 	this.updateAge = function(val){
-		console.log(date.getMinutes());
 		//Implement a method to take in the time and change the age of the pet
 		const incr = val || 1;
 
@@ -189,10 +232,19 @@ function Character(obj){
 			saveGame();
 		}
 	};
-	this.decrementHealth = function(val){
+	this.decrementHealth = function(){
 		//Subtract from health
 		//If health < 15, pet is ill
 		//If health is 0, pet is dead
+		if(this.properties.hunger < 10 || this.properties.love < 10 || poopOnScreen.length > 3){
+			this.properties.health-=1;
+			if(this.properties.health <= 0){
+				this.die();
+			}
+			else if(this.properties.health < 15){
+				this.properties.condition.sick = true;
+			}
+		}
 	};
 	this.changeStage = function(){
 		//Using the health as one variable, and another later implemented
@@ -209,6 +261,40 @@ function Character(obj){
 		const mult = val || 1;
 		this.properties.love -= 2 * mult;
 	};
+	this.die = function(){
+		this.properties.condition.alive = false;
+		bgSong.stop();
+		bgDeadSongBegin.play();
+		this.frameTimer = 300;
+
+	};
+	this.reset = function(){
+		this.properties = {
+			name: "",
+			health: 50,
+			hunger: 0,
+			dirty: 0,
+			love: 0,
+			stage: 0,
+			condition: {
+				asleep: false,
+				sick: false,
+				mad: false,
+				alive: true
+			},
+			age: {
+				hours: 0,
+				minutes: 0,
+				days: 0
+			},
+			date: Date.now()
+		};
+		if(bgDeadSong.isPlaying() || bgDeadSongBegin.isPlaying()){
+			bgDeadSong.stop();
+			bgDeadSongBegin.stop();
+			bgSong.loop();
+		}
+	}
 	this.feed = function(food){
 		//Increment the hunger variable
 		//Possibly give love if the food is good
@@ -242,6 +328,7 @@ function Character(obj){
 	this.cure = function(){
 		if(this.properties.condition.sick === true){
 			this.medAnimation();
+			healSound.play();
 			let f = function(){
 				let i = random(2);
 				if(i >= 1){
@@ -253,6 +340,7 @@ function Character(obj){
 			}
 			if(f()){
 				this.properties.condition.sick = false;
+				this.properties.health += 15;
 			}
 		}
 		else{
@@ -262,6 +350,7 @@ function Character(obj){
 	this.angerAnimation = function(){
 		this.frameTimer = 100;
 		this.noAni = true;
+		noSound.play();
 	}
 	this.medAnimation = function(){
 		this.isBeingMedicated = true;
