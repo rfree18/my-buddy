@@ -26,6 +26,7 @@ var handleSignedInUser = function(user) {
 
   getCharacter(user);
 
+  // Hide login button and display signout button
   document.getElementById('sign-out').style.display = 'block';
   document.getElementById('firebaseui-container').style.display = 'none';
   document.getElementById('name').textContent = `Sign out (${user.email})`;
@@ -38,21 +39,25 @@ var handleSignedInUser = function(user) {
 };
 
 var getCharacter = function(user) {
+  // Characters are stored in uid valued objects
   var docRef = db.collection("users").doc(user.uid);
 
   docRef.get().then(function(doc) {
     if (doc.data().creature) {
       myChar = new Character(doc.data().creature);
     } else {
+      // If for whatever reason the character was manually wiped
       myChar = new Character();
       sendCharacter(user);
     }
   }).catch(function(error) {
+    // New user, needs to setup new character
     myChar = new Character();
   });
 }
 
 var saveGame = function() {
+  // Attach latest timestamp before sending
   myChar.properties.date = Date.now();
   sendCharacter(currUser);
 }
@@ -70,6 +75,7 @@ var sendCharacter = function(user) {
 var handleSignedOutUser = function() {
   currUser = undefined;
 
+  // Revert button to signed out state
   document.getElementById('sign-out').style.display = 'none';
   document.getElementById('firebaseui-container').style.display = 'block';
   ui.start('#firebaseui-container', getUiConfig());
@@ -78,15 +84,15 @@ var handleSignedOutUser = function() {
 // Listen to change in auth state so it displays the correct UI for when
 // the user is signed in or not.
 firebase.auth().onAuthStateChanged(function(user) {
-  // document.getElementById('loading').style.display = 'none';
-  // document.getElementById('loaded').style.display = 'block';
   user ? handleSignedInUser(user) : handleSignedOutUser();
 });
 
 var initApp = function() {
+  // Add sign out action for button
   document.getElementById('sign-out').addEventListener('click', function() {
     firebase.auth().signOut();
   });
 };
 
+// Only load once page finishes rendering
 window.addEventListener('load', initApp);

@@ -472,6 +472,7 @@ function Character(obj){
 	this.intervalIds = this.setIntervals();
 
 	if(obj === undefined) {
+		// Properties contains everything that should be stored in database
 		this.properties = {
 			name: "",
 			health: 50,
@@ -499,6 +500,7 @@ function Character(obj){
 		const diff = Math.floor((Date.now() - this.properties.date) / 1000 / 60);
 		const diff5 = Math.floor(diff / 5);
 
+		// Handle passage of time since last login
 		this.decrementHealth(diff5);
 		this.giveHate(diff5);
 		this.makeHungry(diff5);
