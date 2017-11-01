@@ -11,7 +11,7 @@ var charPoopingImg;
 var charDeadImg = [];
 
 var bg;
-var timer =200;
+var timer = 100;
 var myChar;
 var foodButtonPic;
 var medecineButtonPic;
