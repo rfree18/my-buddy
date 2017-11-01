@@ -8,6 +8,11 @@ body{
 	height: 50px;
 }
 
+.container {
+	background-color: #ddd;
+	margin-top: 70px;
+	margin-bottom: 20px;
+}
 
 #sign-out {
 	margin-right: 16px;
