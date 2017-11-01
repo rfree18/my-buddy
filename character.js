@@ -18,9 +18,20 @@ function Character(obj){
 				minutes: 0,
 				days: 0
 			},
+			date: Date.now()
 		};
 	} else {
 		this.properties = obj;
+
+		// Number of minutes passed
+		const diff = Math.floor((this.date - Date.now()) / 1000 / 60);
+		const diff5 = Math.floor(diff / 5);
+
+		this.decrementHealth(diff5);
+		this.giveHate(diff5);
+		this.makeHungry(diff5);
+		this.updateAge(diff);
+
 	}
 	this.xPos = 375;
 	this.yPos = 375;
@@ -191,16 +202,18 @@ function Character(obj){
 			this.frameTimer = 130;
 		}
 	};
-	this.updateAge = function(){
+	this.updateAge = function(val){
 		console.log(date.getMinutes());
 		//Implement a method to take in the time and change the age of the pet
-		this.properties.age.minutes += 1;
-		if(this.properties.age.minutes >= 60) {
+		const incr = val || 1;
+
+		this.properties.age.minutes += incr;
+		while(this.properties.age.minutes >= 60) {
 			this.properties.age.minutes -= 60;
 			this.properties.age.hours += 1;
 		}
 
-		if(this.properties.age.hours >= 24) {
+		while(this.properties.age.hours >= 24) {
 			this.properties.age.hours -= 24;
 			this.properties.age.days += 1;
 		}
@@ -208,7 +221,7 @@ function Character(obj){
 		// Auto-save character
 		saveGame();
 	};
-	this.decrementHealth = function(){
+	this.decrementHealth = function(val){
 		//Subtract from health
 		//If health < 15, pet is ill
 		//If health is 0, pet is dead
@@ -223,9 +236,10 @@ function Character(obj){
 		clearInterval(this.intervalIds.loveInt);
 		this.intervalIds.loveInt = setInterval(()=>{this.giveHate()}, 600000);
 	};
-	this.giveHate = function(){
+	this.giveHate = function(val){
 		//Decrement the love variable
-		this.properties.love -= 2;
+		const mult = val || 1;
+		this.properties.love -= 2 * mult;
 	};
 	this.feed = function(food){
 		//Increment the hunger variable
@@ -247,9 +261,10 @@ function Character(obj){
 			return false;
 		}
 	};
-	this.makeHungry = function(){
+	this.makeHungry = function(val){
 		//Decrement
-		this.properties.hunger -= 5;
+		const mult = val || 1;
+		this.properties.hunger -= 5 * mult;
 	};
 	this.makeSick = function(){
 		this.frameTimer = 20;
