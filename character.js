@@ -289,7 +289,7 @@ function Character(obj){
 	this.giveLove = function(){
 		//Add to the pet's love variable
 		if(this.properties.love <= this.maxLove){
-			this.properties.love += 5;
+			this.properties.love += 10;
 		}
 		clearInterval(this.intervalIds.loveInt);
 		this.intervalIds.loveInt = setInterval(()=>{this.giveHate()}, 600000);

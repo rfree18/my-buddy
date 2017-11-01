@@ -64,6 +64,8 @@ var foodmenu = false;
 var statusMenu = false;
 var clicked = false;
 
+var canSayHi = true;
+
 //Sounds!
 var saveSound;
 var bgSong;
@@ -93,6 +95,9 @@ var ghosties = [];
 var heart;
 
 var canLove = true;
+
+var myRec;
+var seesHi;
 
 function preload(){
 
@@ -183,6 +188,23 @@ function preload(){
 
 }
 function setup(){
+
+	myRec = new p5.SpeechRec();
+
+  // set up our recorder to constantly monitor the incoming audio stream
+	myRec.continuous = true; // do continuous recognition
+
+  // allow partial results - this will detect words as they are said and will
+  // call the parse function as soon as a word is decoded
+  // when a pause in conversation occurs the entire string will be sent
+  // to the parse function
+	myRec.interimResults = true;
+
+  // define our parse function (called every time a word/phrase is detected)
+	myRec.onResult = parseResult;
+
+  // start the recording engine
+	myRec.start();
 	myCanvas = createCanvas(750, 750);
 	myCanvas.parent("sketch-holder");
 	imageMode(CENTER);
@@ -206,6 +228,7 @@ function setup(){
 	bgSong.loop();
 
 	setInterval(function(){canLove = true;}, 60000);
+	setInterval(function(){canSayHi = true;}, 6000);
 }
 function draw(){
 	background(0, 0, 100);
@@ -289,6 +312,10 @@ function draw(){
 			}
 			drawPoop();
 			if(myChar.properties.condition.alive === true){
+				if(seesHi){
+					myChar.loveAnimation();
+					seesHi = false;
+				}
 				cycleButtons();
 			}
 			else{
@@ -300,6 +327,7 @@ function draw(){
 		}
 	}
 	clicked = false;
+	seesHi = false;
 }
 function drawOutdoorBG(){
 	date = new Date();
@@ -548,4 +576,10 @@ function Poop(x, y, sz){
 			}
 		}
 	}
+}
+function parseResult() {
+  if(canSayHi && (myRec.resultString.toLowerCase() === "hi" || myRec.resultString.toLowerCase() === "hello")){
+  	seesHi = true;
+  	canSayHi = false;
+  }
 }
