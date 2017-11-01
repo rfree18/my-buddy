@@ -53,6 +53,7 @@ var getCharacter = function(user) {
 }
 
 var saveGame = function() {
+  myChar.properties.date = Date.now();
   sendCharacter(currUser);
 }
 

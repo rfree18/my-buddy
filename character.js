@@ -1,38 +1,4 @@
 function Character(obj){
-	if(obj === undefined) {
-		this.properties = {
-			name: "",
-			health: 50,
-			hunger: 0,
-			dirty: 0,
-			love: 0,
-			stage: 0,
-			condition: {
-				asleep: false,
-				sick: false,
-				mad: false,
-				alive: true
-			},
-			age: {
-				hours: 0,
-				minutes: 0,
-				days: 0
-			},
-			date: Date.now()
-		};
-	} else {
-		this.properties = obj;
-
-		// Number of minutes passed
-		const diff = Math.floor((this.date - Date.now()) / 1000 / 60);
-		const diff5 = Math.floor(diff / 5);
-
-		this.decrementHealth(diff5);
-		this.giveHate(diff5);
-		this.makeHungry(diff5);
-		this.updateAge(diff);
-
-	}
 	this.xPos = 375;
 	this.yPos = 375;
 
@@ -218,8 +184,10 @@ function Character(obj){
 			this.properties.age.days += 1;
 		}
 
-		// Auto-save character
-		saveGame();
+		// Auto-save character only during interval
+		if(val === undefined) {
+			saveGame();
+		}
 	};
 	this.decrementHealth = function(val){
 		//Subtract from health
@@ -365,4 +333,40 @@ function Character(obj){
 		}
 	}
 	this.intervalIds = this.setIntervals();
+
+	if(obj === undefined) {
+		this.properties = {
+			name: "",
+			health: 50,
+			hunger: 0,
+			dirty: 0,
+			love: 0,
+			stage: 0,
+			condition: {
+				asleep: false,
+				sick: false,
+				mad: false,
+				alive: true
+			},
+			age: {
+				hours: 0,
+				minutes: 0,
+				days: 0
+			},
+			date: Date.now()
+		};
+	} else {
+		this.properties = obj;
+
+		// Number of minutes passed
+		const diff = Math.floor((Date.now() - this.properties.date) / 1000 / 60);
+		const diff5 = Math.floor(diff / 5);
+
+		this.decrementHealth(diff5);
+		this.giveHate(diff5);
+		this.makeHungry(diff5);
+		this.updateAge(diff);
+
+	}
+
 }

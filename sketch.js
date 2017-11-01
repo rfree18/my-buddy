@@ -1,6 +1,6 @@
 /*
-	The main JavaScript file to run our Virtual pet
-	Contains the draw function, which is what prints to the screen
+The main JavaScript file to run our Virtual pet
+Contains the draw function, which is what prints to the screen
 */
 var walkImg;
 var petImg;
@@ -189,7 +189,7 @@ function draw(){
 	clicked = false;
 }
 function cycleButtons(){
-for(let i = 0; i < buttons.length; i++){
+	for(let i = 0; i < buttons.length; i++){
 		if (buttons[i].display()){
 			//If the user is pressing a button...
 			if(buttons[i].name === "Food"){
