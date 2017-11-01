@@ -17,7 +17,9 @@ function Character(obj){
 	this.frameState = 0;
 	this.maxHealth = 100;
 	this.maxHunger = 50;
+	this.maxLove = 50;
 
+	this.loveAni = false;
 	this.noAni = false;
 	this.wait = false;
 
@@ -58,9 +60,11 @@ function Character(obj){
 				image(charDeadImg[9], 375, this.yPos);
 			}
 			else if(this.frameTimer > 20){
+				image(ghosties[0], 375, this.yPos-100);
 				image(charDeadImg[9], 375, this.yPos);
 			}
 			else{
+				image(ghosties[1], 375, this.yPos-100);
 				image(charDeadImg[9], 375, this.yPos);
 			}
 			this.frameTimer--;
@@ -70,7 +74,7 @@ function Character(obj){
 
 		}
 		else if(this.properties.condition.asleep){
-
+			//TO BE IMPLEMENTED
 		}
 		else if(this.isBeingMedicated){
 			image(charPoopImg, 375, this.yPos);
@@ -93,6 +97,23 @@ function Character(obj){
 				this.isBeingMedicated = false;
 			}
 			this.frameTimer--;
+		}
+		else if(this.loveAni){
+			if(this.frameState === 0){
+				image(loveAni[0], this.xPos, this.yPos);
+				if(this.frameTimer % 15 === 0){
+					this.frameState = 1;
+				}
+			}else{
+				image(loveAni[1], this.xPos, this.yPos-5);
+				if(this.frameTimer % 15 === 0){
+					this.frameState = 0;
+				}
+			}
+			this.frameTimer--;
+			if(this.frameTimer === 0){
+				this.loveAni = false;
+			}
 		}
 		else if(this.noAni){
 			if(this.frameState === 0){
@@ -187,7 +208,7 @@ function Character(obj){
 		b = setInterval(()=>{this.makeHungry()}, 300000);
 		c = setInterval(()=>{this.giveHate()}, 300000);
 		d = setInterval(()=>{this.decrementHealth()}, 300000);
-		e = setInterval(()=>{this.poop()}, 10000);
+		e = setInterval(()=>{this.poop()}, 360000);
 		//SET ALL INTERVALS FOR ALL OF THE HUNGER, HAPPINESS, ETC FUNCTIONS
 		var intids = {
 			//Update age every minute
@@ -250,9 +271,26 @@ function Character(obj){
 		//Using the health as one variable, and another later implemented
 		//"good care" variable, change the stage to the appropriate character
 	};
+	this.loveButton = function(){
+		if(canLove === true){
+			this.giveLove();
+			canLove = false;
+			this.loveAnimation();
+		}
+		else{
+			this.angerAnimation();
+		}
+	};
+	this.loveAnimation = function(){
+		loveSound.play();
+		this.frameTimer = 100;
+		this.loveAni = true;
+	};
 	this.giveLove = function(){
 		//Add to the pet's love variable
-		this.properties.love += 5;
+		if(this.properties.love <= this.maxLove){
+			this.properties.love += 5;
+		}
 		clearInterval(this.intervalIds.loveInt);
 		this.intervalIds.loveInt = setInterval(()=>{this.giveHate()}, 600000);
 	};
@@ -260,6 +298,9 @@ function Character(obj){
 		//Decrement the love variable
 		const mult = val || 1;
 		this.properties.love -= 2 * mult;
+		if(this.properties.love < 0){
+			this.properties.love = 0;
+		}
 	};
 	this.die = function(){
 		this.properties.condition.alive = false;
@@ -319,6 +360,13 @@ function Character(obj){
 		//Decrement
 		const mult = val || 1;
 		this.properties.hunger -= 5 * mult;
+		if(this.properties.hunger < 0){
+			for(let i = this.properties.hunger; i < 0; i++){
+				this.properties.hunger++;
+				this.decrementHealth();
+			}
+
+		}
 	};
 	this.makeSick = function(){
 		this.frameTimer = 20;

@@ -33,6 +33,11 @@ var loveButton;
 var statusButton;
 var infoButton;
 var saveButton;
+var version;
+var infoMenu;
+var isInfoMenu = false;
+
+var loveAni = [];
 
 var menuBG;
 var firstFeed = false;
@@ -72,20 +77,28 @@ var nomSound;
 var healSound;
 var bgDeadSong;
 var bgDeadSongBegin;
+var loveSound;
+var statusScreen;
 
 var day;
 var night;
 var sunset;
 var sunrise;
 var isOutside = false;
+var checkOutsideInterval;
 
 var syringes;
-var ghosties;
+var ghosties = [];
+
+var heart;
+
+var canLove = true;
 
 function preload(){
 
 	//Load in sounds
 	saveSound = loadSound("sound/save.mp3");
+	loveSound = loadSound("sound/love.mp3");
 	bgSong = loadSound("sound/bgSong.mp3");
 	bubbleSound = loadSound("sound/bubbles.mp3");
 	noSound = loadSound("sound/no.mp3");
@@ -109,6 +122,11 @@ function preload(){
 	sunset = loadImage("img/outside/sunset.png");
 	sunrise = loadImage("img/outside/sunrise.png");
 
+	infoMenu = loadImage("img/infoScreen.png");
+	version = "Alpha 1.0";
+	statusScreen = loadImage("img/status/menuBG.png");
+	heart = loadImage("img/status/heart.png");
+
 	petImg = loadImage("img/character_imgs/blueBaby/babyFWD.png");
 	bg = loadImage("img/defaultBG.png");
 	menuBG = loadImage("img/menuBG.png");
@@ -131,6 +149,9 @@ function preload(){
 	infoButton = loadImage("img/buttons/info.png");
 	saveButton = loadImage("img/buttons/save.png");
 
+	ghosties.push(loadImage("img/character_imgs/blueBaby/death/ghostie1.png"));
+	ghosties.push(loadImage("img/character_imgs/blueBaby/death/ghostie2.png"));
+
 	appleIcon = (loadImage("img/food/appleIcon.png"));
 	cookieIcon = (loadImage("img/food/cookieIcon.png"));
 	eatImg = [];
@@ -146,6 +167,7 @@ function preload(){
 		eatImg.push(loadImage("img/character_imgs/blueBaby/eat" + i + ".png"));
 		sickImg.push(loadImage("img/character_imgs/blueBaby/sick" + i + ".png"));
 		madImg.push(loadImage("img/character_imgs/blueBaby/mad" + i + ".png"));
+		loveAni.push(loadImage("img/character_imgs/blueBaby/love" + i + ".png"));
 	}
 
 	syringes = [];
@@ -182,6 +204,8 @@ function setup(){
 	bgDeadSong.setVolume(.05);
 	bgDeadSongBegin.setVolume(.05);
 	bgSong.loop();
+
+	setInterval(function(){canLove = true;}, 60000);
 }
 function draw(){
 	background(0, 0, 100);
@@ -241,11 +265,22 @@ function draw(){
 				statusMenu = false;
 			}
 		}
+		else if(isInfoMenu){
+			image(infoMenu, 375, 375);
+			text("Information", 375, 100);
+			text("Version: " + version, 375, 675);
+			if(backButton.display()){
+				failSound.play();
+				isInfoMenu = false;
+			}
+		}
 		else{
 			drawWindow();
 			if(isOutside){
 				drawOutdoorBG();
 				if(backButton.display()){
+					failSound.play();
+					clearInterval(checkOutsideInterval);
 					isOutside = false;
 				}
 			}
@@ -288,10 +323,16 @@ function cycleButtons(){
 			if(buttons[i].name === "Food"){
 				foodmenu = true;
 				menuSound.play();
+				if(isOutside){
+					clearInterval(checkOutsideInterval);
+				}
 				isOutside = false;
 			}
 			if(buttons[i].name === "Medicine"){
 				myChar.cure();
+				if(isOutside){
+					clearInterval(checkOutsideInterval);
+				}
 				isOutside = false;
 			}
 			if(buttons[i].name === "Status"){
@@ -305,11 +346,13 @@ function cycleButtons(){
 			if(buttons[i].name === "Outside"){
 				menuSound.play();
 				isOutside = true;
+				checkOutsideInterval = setInterval(function(){return isOutside}, 240000);
 			}
 			if(buttons[i].name === "Love"){
-
+				myChar.loveButton();
 			}
 			if(buttons[i].name === "Info"){
+				isInfoMenu = true;
 				menuSound.play();
 			}
 			if(buttons[i].name === "Save"){
@@ -382,11 +425,48 @@ function foodAnimation(){
 		}
 	}
 }
-function angerAnimation(){
-
-}
 function displayStatusMenu(){
-
+	image(statusScreen, 375, 375);
+	let h = myChar.properties.hunger;
+	let hap = myChar.properties.love;
+	let x = 175;
+	let y = 402;
+	if(h > 0){
+		image(heart, x, y);
+	}
+	if(h > 10){
+		image(heart, x+99, y);
+	}
+	if(h > 20){
+		image(heart, x+99+99, y);
+	}
+	if(h > 30){
+		image(heart, x+99+99+99, y);
+	}
+	if(h > 40){
+		image(heart, x+99+99+99+99, y);
+	}
+	y+=250;
+	if(hap > 0){
+		image(heart, x, y);
+	}
+	if(hap > 10){
+		image(heart, x+99, y);
+	}
+	if(hap > 20){
+		image(heart, x+99+99, y);
+	}
+	if(hap > 30){
+		image(heart, x+99+99+99, y);
+	}
+	if(hap > 40){
+		image(heart, x+99+99+99+99, y);
+	}
+	fill(255);
+	text("Status", 375, 100);
+	fill(0);
+	text("Age: " + myChar.properties.age.days + " years old", 525, 200);
+	image(petImg, 150, 250);
 }
 function drawWindow(){
 	date = new Date();
@@ -428,8 +508,12 @@ function Button(name, img,x,y){
 		}
 		else{
 			fill(0);
-			rect(this.xPos-50, this.yPos-50, 100, 100);
-			//clickSound.play();
+			if(this.name !== "Apple" && this.name !== "Cookie"){
+				rect(this.xPos-50, this.yPos-50, 100, 100);
+			}
+			else{
+				rect(this.xPos-75, this.yPos-75, 150, 150);
+			}
 			image(this.pic, this.xPos, this.yPos);
 			if(clicked){
 				return true;
