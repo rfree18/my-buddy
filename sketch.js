@@ -2,6 +2,8 @@
 The main JavaScript file to run our Virtual pet
 Contains the draw function, which is what prints to the screen
 */
+
+//Declare variables
 var walkImg;
 var petImg;
 var sickImg;
@@ -244,10 +246,12 @@ function draw(){
 		timer--;
 	}
 	else{
+		//If dead, play the right song
 		if(myChar.properties.condition.alive === false && bgSong.isPlaying()){
 			bgSong.stop();
 			bgDeadSongBegin.play();
 		}
+		//If user is on the food menu
 		if(foodmenu){
 			image(menuBG, 375, 375);
 			text("Pick a food to eat!", 375, 100);
@@ -262,6 +266,7 @@ function draw(){
 				foodmenu = false;
 			}
 		}
+		//If character is eating
 		else if(foodAni){
 			drawWindow();
 			image(bg, 375,375, 750, 750);
@@ -282,6 +287,7 @@ function draw(){
 				foodmenu = true;
 			}
 		}
+		//If the user is on the status menu
 		else if(statusMenu){
 			displayStatusMenu();
 			if(backButton.display()){
@@ -289,6 +295,7 @@ function draw(){
 				statusMenu = false;
 			}
 		}
+		//If the user is on the info menu
 		else if(isInfoMenu){
 			image(infoMenu, 375, 375);
 			text("Information", 375, 100);
@@ -298,8 +305,11 @@ function draw(){
 				isInfoMenu = false;
 			}
 		}
+		//User is on the main screen, though potentially outside
 		else{
 			drawWindow();
+
+			//User is outside
 			if(isOutside){
 				drawOutdoorBG();
 				if(backButton.display()){
@@ -308,10 +318,12 @@ function draw(){
 					isOutside = false;
 				}
 			}
+			//User is inside
 			else{
 				image(bg, 375,375, 750, 750);
 			}
 			drawPoop();
+			//If the user speaks the words "hello" or "hi" into the mic
 			if(myChar.properties.condition.alive === true){
 				if(seesHi){
 					myChar.loveAnimation();
@@ -320,6 +332,7 @@ function draw(){
 				cycleButtons();
 			}
 			else{
+				//If the character is dead, display the reset button
 				if(resetButton.display()){
 					myChar.reset();
 				}
@@ -330,6 +343,7 @@ function draw(){
 	clicked = false;
 	seesHi = false;
 }
+//Depending on the time of day, draws the appropriate sceneary when outdoors
 function drawOutdoorBG(){
 	date = new Date();
 	if(date.getHours() >= 6 && date.getHours() < 9){
@@ -345,6 +359,8 @@ function drawOutdoorBG(){
 		image(night, 375, 375);
 	}
 }
+//Loop through the buttons and determine what do to depending on
+//the button pressed
 function cycleButtons(){
 	for(let i = 0; i < buttons.length; i++){
 		if (buttons[i].display()){
@@ -392,14 +408,17 @@ function cycleButtons(){
 		}
 	}
 }
+//Empty the poop array if the toilet button is hit
 function clearPoop(){
 	poopOnScreen = [];
 }
+//display the poop on the screen
 function drawPoop(){
 	poopOnScreen.forEach((p)=>{
 		p.display();
 	});
 }
+//Loop through the food buttons
 function cycleFoodButtons(){
 	for(let i = 0; i < foodButtons.length; i++){
 		if(foodButtons[i].display()){
@@ -408,6 +427,7 @@ function cycleFoodButtons(){
 		}
 	}
 }
+//Draws the eating animation for the character
 function foodAnimation(){
 	if(foodName === "Apple"){
 		if(foodAniTimer > 300){
@@ -454,6 +474,9 @@ function foodAnimation(){
 		}
 	}
 }
+//Displays the status menu with the correct number
+//of hearts in each spot, representing how hungry
+//and happy the pet is.
 function displayStatusMenu(){
 	image(statusScreen, 375, 375);
 	let h = myChar.properties.hunger;
@@ -497,6 +520,7 @@ function displayStatusMenu(){
 	text("Age: " + myChar.properties.age.days + " years old", 525, 200);
 	image(petImg, 150, 250);
 }
+//Draw the window in the house, which changes depending on the time of day
 function drawWindow(){
 	date = new Date();
 	if(date.getHours() >= 6 && date.getHours() < 9){
@@ -515,13 +539,14 @@ function drawWindow(){
 function mousePressed(){
 	clicked = true;
 }
+//Button object
 function Button(name, img,x,y){
 	this.name = name;
 	this.pic = img;
 	this.xPos = x;
 	this.yPos = y;
 
-
+	//Return true if the user's mouse is hovering over the button
 	this.checkHovering = function(){
 		if(mouseX > this.xPos - 50 && mouseX < this.xPos + 50 && mouseY > this.yPos-50 && mouseY < this.yPos+50){
 			return true;
@@ -530,6 +555,7 @@ function Button(name, img,x,y){
 			return false;
 		}
 	}
+	//Displays the button graphic, returns true if the user has clicked the button
 	this.display = function(){
 		if(this.checkHovering() === false){
 			image(this.pic, this.xPos, this.yPos);
@@ -553,12 +579,15 @@ function Button(name, img,x,y){
 		}
 	}
 }
+//The poop object, with 3 variables: x, y, and the size (which is a random variable within a specific range)
 function Poop(x, y, sz){
 	this.xPos = x;
 	this.yPos = y+50;
 	this.size = sz;
 	this.counter = 20;
 	this.state = 0;
+
+	//Draws the poop on the screen
 	this.display = function(){
 		if(this.state === 0){
 			image(poopImg1, this.xPos, this.yPos, this.size, this.size);
@@ -578,6 +607,7 @@ function Poop(x, y, sz){
 		}
 	}
 }
+//Used for speech to test to parse the result into a string
 function parseResult() {
   if(canSayHi && (myRec.resultString.toLowerCase() === "hi" || myRec.resultString.toLowerCase() === "hello")){
   	seesHi = true;

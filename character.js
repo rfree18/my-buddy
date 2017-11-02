@@ -1,4 +1,7 @@
+//File containing the Character object
+
 function Character(obj){
+	//Place character in the middle of the screen
 	this.xPos = 375;
 	this.yPos = 375;
 
@@ -6,25 +9,35 @@ function Character(obj){
 	this.imgArr = [];
 	//The stage is similar to the age, but is changed at specific ages.  0 is the baby stage
 
+	//booleans that affect the display function
 	this.isPooping = false;
 	this.isBeingMedicated = false;
+
+	//Used for the walk method
 	this.walkCycle = walkImg;
 	this.walkDir = 1;
 	this.walkUp = true;
 	this.walkCycleCounter = 0;
 	this.walkTimer = 8;
+
+	//Used for most animations
 	this.frameTimer = 20;
 	this.frameState = 0;
+
+	//Character's stats cannot excede these numbers
 	this.maxHealth = 100;
 	this.maxHunger = 50;
 	this.maxLove = 50;
 
+	//Used for display function
 	this.loveAni = false;
 	this.noAni = false;
 	this.wait = false;
 
+	//Displays the character on the screen depending on what it's doing.
+	//Certain states/animations take precedent over others.
 	this.display = function(){
-		//Later on, display pet
+		//If it's dead...
 		if(!this.properties.condition.alive){
 			if(!bgDeadSongBegin.isPlaying() && !bgDeadSong.isPlaying()){
 				bgDeadSong.loop();
@@ -73,9 +86,11 @@ function Character(obj){
 			}
 
 		}
+		//Unfinished function if the character is asleep...
 		else if(this.properties.condition.asleep){
 			//TO BE IMPLEMENTED
 		}
+		//If the animation of curing the pet is going on...
 		else if(this.isBeingMedicated){
 			image(charPoopImg, 375, this.yPos);
 			if(this.frameTimer > 80){
@@ -98,6 +113,7 @@ function Character(obj){
 			}
 			this.frameTimer--;
 		}
+		//If it's performing the love animation...
 		else if(this.loveAni){
 			if(this.frameState === 0){
 				image(loveAni[0], this.xPos, this.yPos);
@@ -115,6 +131,7 @@ function Character(obj){
 				this.loveAni = false;
 			}
 		}
+		//If it's shaking it's head...
 		else if(this.noAni){
 			if(this.frameState === 0){
 				image(madImg[0], 375, this.yPos);
@@ -133,6 +150,7 @@ function Character(obj){
 				this.noAni = false;
 			}
 		}
+		//If it's pooping...
 		else if(this.isPooping){
 			if(this.frameState === 0){
 				image(charPoopImg, this.xPos-3, this.yPos);
@@ -153,6 +171,7 @@ function Character(obj){
 				poopOnScreen.push(new Poop(this.xPos, this.yPos, random(60) + 50));
 			}
 		}
+		//If it's sick...
 		else if(this.properties.condition.sick){
 			if(this.frameState === 0){
 				image(sickImg[0], 375, this.yPos);
@@ -171,9 +190,11 @@ function Character(obj){
 				}
 			}
 		}
+		//If mad (unimplemented)
 		else if(this.properties.condition.mad){
 
 		}
+		//If no special conditions...walk around screen
 		else{
 			if(this.wait){
 				image(petImg, this.xPos, this.yPos);
@@ -203,12 +224,13 @@ function Character(obj){
 			}
 		}
 	};
+	//Set how often these functions will be called and store the interval Ids
 	this.setIntervals = function(){
-		a = setInterval(()=>{this.updateAge()}, 60000);
-		b = setInterval(()=>{this.makeHungry()}, 300000);
-		c = setInterval(()=>{this.giveHate()}, 300000);
-		d = setInterval(()=>{this.decrementHealth()}, 300000);
-		e = setInterval(()=>{this.poop()}, 360000);
+		const a = setInterval(()=>{this.updateAge()}, 60000);
+		const b = setInterval(()=>{this.makeHungry()}, 300000);
+		const c = setInterval(()=>{this.giveHate()}, 300000);
+		const d = setInterval(()=>{this.decrementHealth()}, 300000);
+		const e = setInterval(()=>{this.poop()}, 360000);
 		//SET ALL INTERVALS FOR ALL OF THE HUNGER, HAPPINESS, ETC FUNCTIONS
 		var intids = {
 			//Update age every minute
@@ -224,17 +246,16 @@ function Character(obj){
 		};
 		return intids;
 	};
-	this.sayHi = function(){
-		//Implement to say hi when the user speaks the words "hello" or "hi" into the mic
-	};
+	//Sets the character up to poop
 	this.poop = function(){
 		if(!this.properties.condition.sick && this.properties.condition.alive){
 			this.isPooping = true;
 			this.frameTimer = 130;
 		}
 	};
+	//Ages up the character by one minute
 	this.updateAge = function(val){
-		//Implement a method to take in the time and change the age of the pet
+		//val is part of our offline mode workaround
 		const incr = val || 1;
 
 		this.properties.age.minutes += incr;
@@ -271,6 +292,7 @@ function Character(obj){
 		//Using the health as one variable, and another later implemented
 		//"good care" variable, change the stage to the appropriate character
 	};
+	//Determine if the character will respond to the love button
 	this.loveButton = function(){
 		if(canLove === true){
 			this.giveLove();
@@ -281,6 +303,7 @@ function Character(obj){
 			this.angerAnimation();
 		}
 	};
+	//Sets the character up to perform the "love" animation
 	this.loveAnimation = function(){
 		loveSound.play();
 		this.frameTimer = 100;
@@ -291,17 +314,19 @@ function Character(obj){
 		if(this.properties.love <= this.maxLove){
 			this.properties.love += 10;
 		}
+		//reset the interval for love being subtracted from
 		clearInterval(this.intervalIds.loveInt);
 		this.intervalIds.loveInt = setInterval(()=>{this.giveHate()}, 600000);
 	};
+	//Decrement the love variable
 	this.giveHate = function(val){
-		//Decrement the love variable
 		const mult = val || 1;
 		this.properties.love -= 2 * mult;
 		if(this.properties.love < 0){
 			this.properties.love = 0;
 		}
 	};
+	//Begins the character's journey into death
 	this.die = function(){
 		this.properties.condition.alive = false;
 		bgSong.stop();
@@ -309,6 +334,7 @@ function Character(obj){
 		this.frameTimer = 300;
 
 	};
+	//If character is dead, call this function to reset everything in the properties object of the character
 	this.reset = function(){
 		this.properties = {
 			name: "",
@@ -330,12 +356,14 @@ function Character(obj){
 			},
 			date: Date.now()
 		};
+		//go back to playing the normal bg song
 		if(bgDeadSong.isPlaying() || bgDeadSongBegin.isPlaying()){
 			bgDeadSong.stop();
 			bgDeadSongBegin.stop();
 			bgSong.loop();
 		}
 	}
+	//Takes in a string, food, and determines what feed will do
 	this.feed = function(food){
 		//Increment the hunger variable
 		//Possibly give love if the food is good
@@ -352,12 +380,14 @@ function Character(obj){
 				this.giveLove();
 				return true;
 			}
-		} else{
+		} 
+		//If the character is full, return false which signals the "no" animation
+		else{
 			return false;
 		}
 	};
+	//Decrements from the hunger variable
 	this.makeHungry = function(val){
-		//Decrement
 		const mult = val || 1;
 		this.properties.hunger -= 5 * mult;
 		if(this.properties.hunger < 0){
@@ -368,11 +398,13 @@ function Character(obj){
 
 		}
 	};
+	//Sets the character up to perform the sick animation
 	this.makeSick = function(){
 		this.frameTimer = 20;
 		this.properties.condition.sick = true;
-
 	}
+	//If the character is attempting to be cured, determine whether or not
+	//it is cured, as well as determining which animation should play
 	this.cure = function(){
 		if(this.properties.condition.sick === true){
 			this.medAnimation();
@@ -391,19 +423,23 @@ function Character(obj){
 				this.properties.health += 15;
 			}
 		}
+		//If it isn't sick, shake it's head
 		else{
 			this.angerAnimation();
 		}
 	}
+	//Starts the shaking head animation
 	this.angerAnimation = function(){
 		this.frameTimer = 100;
 		this.noAni = true;
 		noSound.play();
 	}
+	//Animation of a syringe going into the character
 	this.medAnimation = function(){
 		this.isBeingMedicated = true;
 		this.frameTimer = 120;
 	}
+	//Has the character walk to the left of the screen
 	this.walkLeft = function(){
 		//walks left on the screen
 		if(this.walkUp){
@@ -435,6 +471,7 @@ function Character(obj){
 			}
 		}
 	}
+	//Character walking left animation
 	this.walkRight = function(){
 		if(this.walkUp){
 			if(this.walkTimer > 0){
@@ -469,8 +506,10 @@ function Character(obj){
 			}
 		}
 	}
+	//save the intervals from setIntervals into this variable
 	this.intervalIds = this.setIntervals();
 
+	//If the user logs in and has no entry in the database
 	if(obj === undefined) {
 		// Properties contains everything that should be stored in database
 		this.properties = {
@@ -493,7 +532,10 @@ function Character(obj){
 			},
 			date: Date.now()
 		};
-	} else {
+	} 
+	//If there exists an entry in the database for the current user, set properties to what already
+	//exists in memory, and decrement variables according to how long the user has been logged out.
+	else {
 		this.properties = obj;
 
 		// Number of minutes passed
@@ -507,5 +549,4 @@ function Character(obj){
 		this.updateAge(diff);
 
 	}
-
 }
