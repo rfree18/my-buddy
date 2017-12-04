@@ -1,4 +1,4 @@
-# p5agotchi
+# MyBuddy Virtual Pet
 
 Currently in it's alpha stage, our program is a working virtual pet written using p5.js libraries.
 
