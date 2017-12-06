@@ -10,7 +10,7 @@ var sickImg;
 var eatImg;
 var madImg;
 var charPoopingImg;
-var charDeadImg = [];
+var charDeadImg;
 
 var bg;
 var timer = 100;
@@ -92,7 +92,7 @@ var isOutside = false;
 var checkOutsideInterval;
 
 var syringes;
-var ghosties = [];
+var ghosties;
 
 var heart;
 
@@ -156,8 +156,7 @@ function preload(){
 	infoButton = loadImage("img/buttons/info.png");
 	saveButton = loadImage("img/buttons/save.png");
 
-	ghosties.push(loadImage("img/character_imgs/blueBaby/death/ghostie1.png"));
-	ghosties.push(loadImage("img/character_imgs/blueBaby/death/ghostie2.png"));
+	ghosties = new AnimatedImage("img/character_imgs/blueBaby/death/ghostie", ".png", 2, 40, true);
 
 	appleIcon = (loadImage("img/food/appleIcon.png"));
 	cookieIcon = (loadImage("img/food/cookieIcon.png"));
@@ -184,9 +183,7 @@ function preload(){
 
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
 
-	for(let i = 1; i < 11; i++){
-		charDeadImg.push(loadImage("img/character_imgs/blueBaby/death/" + i + ".png"));
-	}
+	charDeadImg = new AnimatedImage("img/character_imgs/blueBaby/death/", ".png", 10, 20, false);
 
 }
 function setup(){

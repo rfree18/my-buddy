@@ -42,48 +42,11 @@ function Character(obj){
 			if(!bgDeadSongBegin.isPlaying() && !bgDeadSong.isPlaying()){
 				bgDeadSong.loop();
 			}
-			if(this.frameTimer > 280){
-				image(charDeadImg[0], 375, this.yPos);
-			}
-			else if(this.frameTimer > 260){
-				image(charDeadImg[1], 375, this.yPos);
-			}
-			else if(this.frameTimer > 240){
-				image(charDeadImg[2], 375, this.yPos);
-			}
-			else if(this.frameTimer > 220){
-				image(charDeadImg[3], 375, this.yPos);
-			}
-			else if(this.frameTimer > 200){
-				image(charDeadImg[4], 375, this.yPos);
-			}
-			else if(this.frameTimer > 180){
-				image(charDeadImg[5], 375, this.yPos);
-			}
-			else if(this.frameTimer > 160){
-				image(charDeadImg[6], 375, this.yPos);
-			}
-			else if(this.frameTimer > 140){
-				image(charDeadImg[7], 375, this.yPos);
-			}
-			else if(this.frameTimer > 120){
-				image(charDeadImg[8], 375, this.yPos);
-			}
-			else if(this.frameTimer > 40){
-				image(charDeadImg[9], 375, this.yPos);
-			}
-			else if(this.frameTimer > 20){
-				image(ghosties[0], 375, this.yPos-100);
-				image(charDeadImg[9], 375, this.yPos);
-			}
-			else{
-				image(ghosties[1], 375, this.yPos-100);
-				image(charDeadImg[9], 375, this.yPos);
-			}
-			this.frameTimer--;
-			if(this.frameTimer === 0){
-				this.frameTimer = 40;
-			}
+			charDeadImg.draw(375, this.yPos, (imgNum) => {
+				if(imgNum === charDeadImg.images.length - 1) {
+					ghosties.draw(375, this.yPos - 100);
+				}
+			});
 
 		}
 		//Unfinished function if the character is asleep...
@@ -362,6 +325,8 @@ function Character(obj){
 			bgDeadSongBegin.stop();
 			bgSong.loop();
 		}
+
+		charDeadImg.reset();
 	}
 	//Takes in a string, food, and determines what feed will do
 	this.feed = function(food){
@@ -380,7 +345,7 @@ function Character(obj){
 				this.giveLove();
 				return true;
 			}
-		} 
+		}
 		//If the character is full, return false which signals the "no" animation
 		else{
 			return false;
@@ -532,7 +497,7 @@ function Character(obj){
 			},
 			date: Date.now()
 		};
-	} 
+	}
 	//If there exists an entry in the database for the current user, set properties to what already
 	//exists in memory, and decrement variables according to how long the user has been logged out.
 	else {
