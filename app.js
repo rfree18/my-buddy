@@ -30,7 +30,7 @@ var handleSignedInUser = function(user) {
   document.getElementById('sign-out').style.display = 'block';
   document.getElementById('firebaseui-container').style.display = 'none';
   document.getElementById('name').textContent = `Sign out (${user.email})`;
-  if (user.photoURL){
+  if (user.photoURL) {
     document.getElementById('photo').src = user.photoURL;
     document.getElementById('photo').style.display = 'block';
   } else {
@@ -70,8 +70,8 @@ var sendCharacter = function(user) {
 }
 
 /**
-* Displays the UI for a signed out user.
-*/
+ * Displays the UI for a signed out user.
+ */
 var handleSignedOutUser = function() {
   currUser = undefined;
 
