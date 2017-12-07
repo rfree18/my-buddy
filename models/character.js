@@ -56,25 +56,13 @@ function Character(obj){
 		//If the animation of curing the pet is going on...
 		else if(this.isBeingMedicated){
 			image(charPoopImg, 375, this.yPos);
-			if(this.frameTimer > 80){
-				image(syringes[0], 420, 330);
-			}
-			else if(this.frameTimer > 60){
-				image(syringes[1], 420, 330);
-			}
-			else if(this.frameTimer > 40){
-				image(syringes[2], 420, 330);
-			}
-			else if(this.frameTimer > 20){
-				image(syringes[3], 420, 330);
-			}
-			else if(this.frameTimer > 0){
-				image(syringes[4], 420, 330);
-			}
-			else if(this.frameTimer === 0){
-				this.isBeingMedicated = false;
-			}
-			this.frameTimer--;
+			syringes.draw(420, 330, (num) => {
+				if(num === syringes.images.length - 1) {
+					console.log('yay');
+					this.isBeingMedicated = false;
+					syringes.reset();
+				}
+			});
 		}
 		//If it's performing the love animation...
 		else if(this.loveAni){

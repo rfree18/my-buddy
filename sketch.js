@@ -176,10 +176,7 @@ function preload(){
 		loveAni.push(loadImage("img/character_imgs/blueBaby/love" + i + ".png"));
 	}
 
-	syringes = [];
-	for(let i = 1; i < 6; i++){
-		syringes.push(loadImage("img/animations/syringe/" + i + ".png"));
-	}
+	syringes = new AnimatedImage("img/animations/syringe/", ".png", 5, 20, false);
 
 	charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
 
