@@ -239,7 +239,7 @@ function draw() {
   textAlign(CENTER);
 
   // Determine whether or not the user is currently signed in
-  if (currUser == undefined) {
+  if (currUser === undefined) {
     text("Please login to continue", 375, 375);
   } else if (timer > 0) {
     text(`Welcome ${currUser.displayName}!`, 375, 375);
