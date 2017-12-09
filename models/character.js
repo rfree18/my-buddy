@@ -482,6 +482,7 @@ function Character(obj) {
         minutes: 0,
         days: 0
       },
+      unlockables: {},
       date: Date.now()
     };
   }
