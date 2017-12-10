@@ -1,5 +1,6 @@
 // create a variable to hold our world object
 var world;
+var myChar;
 
 // create variables to hold our markers
 var markerHiro, markerZb;
@@ -30,6 +31,7 @@ function setup() {
 function draw() {
 
   if(markerHiro.isVisible()) {
+    myChar.setUnlockable('hiro');
     window.location = "index.html";
   }
 
