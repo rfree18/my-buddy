@@ -353,7 +353,8 @@ function draw() {
         image(bg, 375, 375, 750, 750);
         //Code to make door open if user hovers on it
         displayDoorImage();
-        if(doorIsClosed()){
+        // Don't open door if character is dead
+        if(doorIsClosed() || !myChar.properties.condition.alive){
           image(closedDoor, 500, 290, 145, 252);
         }
         else{
@@ -396,14 +397,15 @@ function displayDoorImage(){
 //Function to determine if the door is open or closed
 function doorIsClosed(){
   if(mouseX > 427.5 && mouseX < 572.5 && mouseY > 290-126 && mouseY < 290+126){
-    if(mouseIsPressed) {
+    // Don't go outside if character is dead
+    if(mouseIsPressed && myChar.properties.condition.alive) {
       menuSound.play();
       isOutside = true;
       checkOutsideInterval = setInterval(function() {
         return isOutside
       }, 240000);
     }
-    
+
     return false;
   }
   else{
