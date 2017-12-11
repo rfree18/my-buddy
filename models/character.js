@@ -233,18 +233,24 @@ function Character(obj) {
       saveGame();
     }
   };
-  this.decrementHealth = function() {
+  this.decrementHealth = function(val) {
     //Subtract from health
     //If health < 15, pet is ill
     //If health is 0, pet is dead
+    if(val) {
+      this.properties.health -= val;
+    }
+
     if (this.properties.hunger < 10 || this.properties.love < 10 || poopOnScreen.length > 3) {
       this.properties.health -= 1;
-      if (this.properties.health <= 0) {
-        this.die();
-      } else if (this.properties.health < 15) {
-        this.properties.condition.sick = true;
-      }
     }
+
+    if (this.properties.health <= 0) {
+      this.die();
+    } else if (this.properties.health < 15) {
+      this.properties.condition.sick = true;
+    }
+
   };
   this.changeStage = function() {
     //Using the health as one variable, and another later implemented
@@ -348,14 +354,20 @@ function Character(obj) {
   };
   //Decrements from the hunger variable
   this.makeHungry = function(val) {
-    const mult = val || 1;
-    this.properties.hunger -= 5 * mult;
-    if (this.properties.hunger < 0) {
-      for (let i = this.properties.hunger; i < 0; i++) {
-        this.properties.hunger++;
-        this.decrementHealth();
+    if(val) {
+      this.properties.hunger -= val;
+      if(this.properties.hunger < 0) {
+        this.properties.hunger = 0;
       }
+    } else {
+      this.properties.hunger -= 5
+      if (this.properties.hunger < 0) {
+        for (let i = this.properties.hunger; i < 0; i++) {
+          this.properties.hunger++;
+          this.decrementHealth();
+        }
 
+      }
     }
   };
   //Sets the character up to perform the sick animation
