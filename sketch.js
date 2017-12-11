@@ -396,6 +396,14 @@ function displayDoorImage(){
 //Function to determine if the door is open or closed
 function doorIsClosed(){
   if(mouseX > 427.5 && mouseX < 572.5 && mouseY > 290-126 && mouseY < 290+126){
+    if(mouseIsPressed) {
+      menuSound.play();
+      isOutside = true;
+      checkOutsideInterval = setInterval(function() {
+        return isOutside
+      }, 240000);
+    }
+    
     return false;
   }
   else{
