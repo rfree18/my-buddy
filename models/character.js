@@ -15,6 +15,7 @@ function Character(obj) {
 
   //Used for the walk method
   this.walkCycle = walkImg;
+  this.frontImage = petImg;
   this.walkDir = 1;
   this.walkUp = true;
   this.walkCycleCounter = 0;
@@ -147,7 +148,7 @@ function Character(obj) {
     //If no special conditions...walk around screen
     else {
       if (this.wait) {
-        image(petImg, this.xPos, this.yPos);
+        image(this.frontImage, this.xPos, this.yPos);
         this.walkTimer--;
         if (this.walkTimer == 0) {
           this.wait = false;
@@ -402,10 +403,10 @@ function Character(obj) {
     //walks left on the screen
     if (this.walkUp) {
       if (this.walkTimer > 0) {
-        image(walkImg[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
         this.walkTimer--;
       } else {
-        image(walkImg[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
         this.walkCycleCounter++;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 4) {
@@ -414,10 +415,10 @@ function Character(obj) {
       }
     } else {
       if (this.walkTimer > 0) {
-        image(walkImg[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
         this.walkTimer--;
       } else {
-        image(walkImg[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
         this.walkCycleCounter--;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 0) {
@@ -431,11 +432,11 @@ function Character(obj) {
     if (this.walkUp) {
       if (this.walkTimer > 0) {
         scale(-1, 1);
-        image(walkImg[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
         this.walkTimer--;
       } else {
         scale(-1, 1);
-        image(walkImg[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
         this.walkCycleCounter++;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 4) {
@@ -445,11 +446,11 @@ function Character(obj) {
     } else {
       if (this.walkTimer > 0) {
         scale(-1, 1);
-        image(walkImg[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
         this.walkTimer--;
       } else {
         scale(-1, 1);
-        image(walkImg[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
         this.walkCycleCounter--;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 0) {
@@ -459,10 +460,10 @@ function Character(obj) {
     }
   }
 
-  this.setUnlockable(unlockable) {
+ /*this.setUnlockable(unlockable) = function() {
     this.properties.unlockables.unlockable = true;
     saveGame();
-  }
+  }*/
 
   //save the intervals from setIntervals into this variable
   this.intervalIds = this.setIntervals();

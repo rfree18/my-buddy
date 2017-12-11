@@ -101,6 +101,21 @@ var canLove = true;
 var myRec;
 var seesHi;
 
+//TESTING NEW CHARACTER
+var newWalkImg = [];
+var newFrontFace;
+var lightWalk = [];
+var lightFront;
+
+//Doors
+var sunsetDoor;
+var sunriseDoor;
+var nightDoor;
+var dayDoor;
+
+var closedDoor;
+var openDoor;
+
 function preload() {
 
   //Load in sounds
@@ -122,12 +137,29 @@ function preload() {
   walkImg = [];
   for (let i = 1; i <= 5; i++) {
     walkImg.push(loadImage("img/character_imgs/blueBaby/walk/walk" + i + ".png"));
+    newWalkImg.push(loadImage("img/character_imgs/purpleEmo/walk/" + i + ".png"));
+    lightWalk.push(loadImage("img/character_imgs/lightBulb/walk/" + i + ".png"));
   }
+  //TEST
+  newFrontFace = loadImage("img/character_imgs/purpleEmo/purpleFWD.png");
+  lightFront = loadImage("img/character_imgs/lightBulb/bulbFWD.png");
+  //END TEST
+
+
   //Load in images
   day = loadImage("img/outside/day.png");
   night = loadImage("img/outside/night.png");
   sunset = loadImage("img/outside/sunset.png");
   sunrise = loadImage("img/outside/sunrise.png");
+
+  //Door images
+  openDoor = loadImage("img/door.png");
+  closedDoor = loadImage("img/openDoor.png");
+
+  sunriseDoor = loadImage("img/door/sunriseDoor.png");
+  nightDoor = loadImage("img/door/nightDoor.png");
+  dayDoor = loadImage("img/door/dayDoor.png");
+  sunsetDoor = loadImage("img/door/sunsetDoor.png");
 
   infoMenu = loadImage("img/infoScreen.png");
   version = "Alpha 1.0";
@@ -257,7 +289,7 @@ function draw() {
       if (cycleFoodButtons()) {
         foodmenu = false;
         foodAni = true;
-        foodAniTimer = 400;
+        foodAniTimer = 200;
         firstFeed = true;
       }
       if (backButton.display()) {
@@ -319,6 +351,14 @@ function draw() {
       //User is inside
       else {
         image(bg, 375, 375, 750, 750);
+        //Code to make door open if user hovers on it
+        displayDoorImage();
+        if(doorIsClosed()){
+          image(closedDoor, 500, 290, 145, 252);
+        }
+        else{
+          image(openDoor, 645, 290, 145, 252);
+        }
       }
       drawPoop();
       //If the user speaks the words "hello" or "hi" into the mic
@@ -339,6 +379,28 @@ function draw() {
   }
   clicked = false;
   seesHi = false;
+}
+//Similar to the drawWindow function in that it produces the correct door graphic depending on time of day
+function displayDoorImage(){
+  date = new Date();
+  if (date.getHours() >= 6 && date.getHours() < 9) {
+    image(sunriseDoor, 500, 290, 145, 252);
+  } else if (date.getHours() >= 9 && date.getHours() < 18) {
+    image(dayDoor, 500, 290, 145, 252);
+  } else if (date.getHours() >= 18 && date.getHours() < 20) {
+    image(sunsetDoor, 500, 290, 145, 252);
+  } else if (date.getHours() >= 20 || date.getHours() < 8) {
+    image(nightDoor, 500, 290, 145, 252);
+  }
+}
+//Function to determine if the door is open or closed
+function doorIsClosed(){
+  if(mouseX > 427.5 && mouseX < 572.5 && mouseY > 290-126 && mouseY < 290+126){
+    return false;
+  }
+  else{
+    return true;
+  }
 }
 //Depending on the time of day, draws the appropriate sceneary when outdoors
 function drawOutdoorBG() {
@@ -426,11 +488,11 @@ function cycleFoodButtons() {
 //Draws the eating animation for the character
 function foodAnimation() {
   if (foodName === "Apple") {
-    if (foodAniTimer > 300) {
+    if (foodAniTimer > 150) {
       image(appleArr[0], 425, 400, 100, 100);
-    } else if (foodAniTimer > 200) {
-      image(appleArr[1], 425, 400, 100, 100);
     } else if (foodAniTimer > 100) {
+      image(appleArr[1], 425, 400, 100, 100);
+    } else if (foodAniTimer > 50) {
       image(appleArr[2], 425, 400, 100, 100);
     } else if (foodAniTimer > 25) {
       image(appleArr[3], 425, 400, 100, 100);
@@ -438,11 +500,11 @@ function foodAnimation() {
 
     }
   } else if (foodName === "Cookie") {
-    if (foodAniTimer > 300) {
+    if (foodAniTimer > 150) {
       image(cookieArr[0], 425, 375);
-    } else if (foodAniTimer > 200) {
-      image(cookieArr[1], 425, 375);
     } else if (foodAniTimer > 100) {
+      image(cookieArr[1], 425, 375);
+    } else if (foodAniTimer > 50) {
       image(cookieArr[2], 425, 375);
     } else if (foodAniTimer > 25) {
       image(cookieArr[3], 425, 375);
