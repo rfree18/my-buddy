@@ -458,6 +458,12 @@ function Character(obj) {
       }
     }
   }
+
+  this.setUnlockable(unlockable) {
+    this.properties.unlockables.unlockable = true;
+    saveGame();
+  }
+
   //save the intervals from setIntervals into this variable
   this.intervalIds = this.setIntervals();
 
@@ -482,6 +488,7 @@ function Character(obj) {
         minutes: 0,
         days: 0
       },
+      unlockables: {},
       date: Date.now()
     };
   }
