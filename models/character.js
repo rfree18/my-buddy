@@ -294,10 +294,7 @@ function Character(obj) {
   //Begins the character's journey into death
   this.die = function() {
     this.properties.condition.alive = false;
-    bgSong.stop();
-    bgDeadSongBegin.play();
     this.frameTimer = 300;
-
   };
   //If character is dead, call this function to reset everything in the properties object of the character
   this.reset = function() {
@@ -472,10 +469,10 @@ function Character(obj) {
     }
   }
 
-  /*this.setUnlockable(unlockable) = function() {
-     this.properties.unlockables.unlockable = true;
-     saveGame();
-   }*/
+  this.setUnlockable = function(unlockable, callback) {
+     this.properties.unlockables[unlockable] = true;
+     saveGame(callback);
+   }
 
   //save the intervals from setIntervals into this variable
   this.intervalIds = this.setIntervals();
