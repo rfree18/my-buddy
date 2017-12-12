@@ -7,6 +7,8 @@ var madImg;
 var charPoopingImg;
 var charDeadImg;
 
+var tempFood;
+
 var bg;
 var timer = 100;
 var myChar;
@@ -15,6 +17,12 @@ var medecineButtonPic;
 var outsideButton;
 var toiletButton;
 var backButton;
+
+var addedCake = false;
+var addedTaco = false;
+var addedSushi = false;
+var addedPizza = false;
+var addedPear = false;
 
 var date = new Date();
 var sunWindow;
@@ -147,7 +155,7 @@ function Button(name, img, x, y) {
       return false;
     } else {
       fill(0);
-      if (this.name !== "Apple" && this.name !== "Cookie") {
+      if (this.name !== "Apple" && this.name !== "Cookie" && this.name !== "Cake" && this.name !== "Taco" && this.name !== "Sushi" && this.name !== "Pizza" && this.name!=="Pear") {
         rect(this.xPos - 50, this.yPos - 50, 100, 100);
       } else {
         rect(this.xPos - 75, this.yPos - 75, 150, 150);

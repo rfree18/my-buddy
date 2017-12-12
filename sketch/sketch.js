@@ -78,7 +78,7 @@ function draw() {
       if (cycleFoodButtons()) {
         foodmenu = false;
         foodAni = true;
-        foodAniTimer = 200;
+        foodAniTimer = 225;
         firstFeed = true;
       }
       if (backButton.display()) {
@@ -91,11 +91,16 @@ function draw() {
       drawWindow();
       image(bg, 375, 375, 750, 750);
       if (firstFeed) {
-        feedOrAnger = myChar.feed(foodName);
+        for(let i = 0; i < foods.length; i++){
+          if(foods[i].name == foodName){
+            tempFood = foods[i];
+          }
+        }
+        feedOrAnger = myChar.feed(tempFood);
         firstFeed = false;
       }
       if (feedOrAnger) {
-        foodAnimation();
+        foodAnimation(tempFood);
       } else {
         foodAni = false;
         myChar.angerAnimation();
@@ -284,11 +289,11 @@ function cycleFoodButtons() {
 }
 //Draws the eating animation for the character
 function foodAnimation(food) {
-    if (foodAniTimer > 150) {
+    if (foodAniTimer > 175) {
       food.display(0);
-    } else if (foodAniTimer > 100) {
+    } else if (foodAniTimer > 125) {
       food.display(1);
-    } else if (foodAniTimer > 50) {
+    } else if (foodAniTimer > 75) {
       food.display(2);
     } else if (foodAniTimer > 25) {
       food.display(3);
@@ -403,31 +408,59 @@ function parseResult() {
 }
 //Check which foods the user has unlocked
 function pushNewFoodIcons(){
-  if(myChar.properties.unlockables.cake){
-    foodButtons.push(new Button("Cake", cakeIcon, 600, 400));
-    foodButtons[0].xPos = 200;
-    foodButtons[1].xPos = 400;
+  if(myChar.properties.unlockables.cake && addedCake === false){
+    nudgeOver(foodButtons.length, "Cake", cakeIcon);
+    addedCake = true;
   }
-  if(myChar.properties.unlockables.taco){
-    if(foodButtons.length === 2){
-      foodButtons.push(new Button("Taco", tacoIcon, 600, 400));
-      foodButtons[0].xPos = 200;
-      foodButtons[1].xPos = 400;
-    }
-    else{
-      foodButtons.push(new Button("Taco", tacoIcon, 600, 400));
-      foodButtons[0].xPos = 150;
-      foodButtons[1].xPos = 300;
-      foodButtons[2].xPos = 450;
-    }
+  if(myChar.properties.unlockables.taco && addedTaco === false){
+    nudgeOver(foodButtons.length, "Taco", tacoIcon);
+    addedTaco = true;
   }
-  if(myChar.properties.unlockables.pear){
+  if(myChar.properties.unlockables.pear && addedPear === false){
+    nudgeOver(foodButtons.length, "Pear", pearIcon);
+    addedPear = true;
+  }
+  if(myChar.properties.unlockables.sushi && addedSushi === false){
+    nudgeOver(foodButtons.length, "Sushi", sushiIcon);
+    addedSushi = true;
+  }
+  if(myChar.properties.unlockables.pizza && addedPizza === false){
+    nudgeOver(foodButtons.length, "Pizza", pizzaIcon);
+    addedPizza = true;
+  }
+}
+function nudgeOver(currentSize, buttonName, buttonIcon){
+  if(currentSize === 2){
+    foodButtons[0].xPos = 150;
+    foodButtons[1].xPos = 375;
+    foodButtons.push(new Button(buttonName, buttonIcon, 600, 400));
+  }
+  else if(currentSize === 3){
+    foodButtons[0].xPos = 115;
+    foodButtons[1].xPos = 285;
+    foodButtons[2].xPos = 465;
+    foodButtons.push(new Button(buttonName, buttonIcon, 635, 400));
+  }
+  else if(currentSize === 4){
+    foodButtons[0].xPos = 250;
+    foodButtons[1].xPos = 500;
+    foodButtons[0].yPos = 300;
+    foodButtons[1].yPos = 300;
 
+    foodButtons[2].xPos = 150;
+    foodButtons[2].yPos = 500;
+    foodButtons[3].xPos = 375;
+    foodButtons[3].yPos = 500;
+    foodButtons.push(new Button(buttonName, buttonIcon, 600, 500));
   }
-  if(myChar.properties.unlockables.sushi){
-
+  else if(currentSize === 5){
+    for(let i = 0; i < currentSize; i++){
+      foodButtons[i].yPos -= 50;
+    }
+    foodButtons.push(new Button(buttonName, buttonIcon, 375, 650));
   }
-  if(myChar.properties.unlockables.pizza){
-    
+  else if(currentSize === 6){
+    foodButtons[5].xPos = 250;
+    foodButtons.push(new Button(buttonName, buttonIcon, 500, 650));
   }
 }

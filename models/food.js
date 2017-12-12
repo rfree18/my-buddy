@@ -27,10 +27,13 @@ class Food{
 	display(num){
 		switch(num){
 			case 0:
-				
+				image(this.image, 440, 400);
 			case 1:
+				image(this.eatingImgs[0], 440, 400);
 			case 2:
+				image(this.eatingImgs[1], 440, 400);
 			case 3:
+				image(this.eatingImgs[2], 440, 400);
 		}
 	}
 }

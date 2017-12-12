@@ -335,7 +335,7 @@ function Character(obj) {
     //Possibly give love if the food is good
     //Possibly take love if the food is disliked by this character
     if (this.properties.hunger < this.maxHunger) {
-        return true
+        return true;
     }
     //If the character is full, return false which signals the "no" animation
     else {
