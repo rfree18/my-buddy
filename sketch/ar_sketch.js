@@ -14,6 +14,20 @@ function setup() {
 
   const markerTags = document.querySelectorAll('a-marker');
   markerTags.forEach((tag) => {
+    const marker = world.getMarker(tag.id);
+    const imgPlane = new Plane({
+      x: 0,
+      y: 0.25,
+      z: 0,
+      width: 0.5,
+      height: 0.5,
+      depth: 0.5,
+      rotationX: -90,
+      asset: `${tag.id}-img`
+    });
+
+    marker.addChild(imgPlane);
+
     markers.push(world.getMarker(tag.id));
   });
 
@@ -39,7 +53,6 @@ function setup() {
 
 
 function draw() {
-
   markers.forEach((marker) => {
     if (marker.isVisible() && myChar && !isLoading) {
       if (myChar.properties.unlockables === undefined) {
