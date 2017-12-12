@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Virtual Pet</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -10,47 +11,56 @@
 	<script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
 	<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css" />
 </head>
+
 <body>
 	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-		 <a class="navbar-brand" style="text-align: left;" href="index.html">p5agotchi</a>
-		 <a class="nav-item nav-link" href="about.html">About</a>
-		 <a class="nav-item nav-link" href="unlock.html">Unlock</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="navbar-brand" style="text-align: left;" href="index.html">My Buddy</a>
+				<a class="nav-item nav-link" href="about.html">About</a>
+				<a class="nav-item nav-link" href="unlock.html">Unlock</a>
+				<div class="" id="firebaseui-spa">
+					<div id="firebaseui-container" style="float: right;"></div>
+					<button type="button" id="sign-out" class="btn btn-outline-primary hidden" style="float: right;">
+						 <div id="photo-container">
+							 <img style="width: 30px; display: inline-table" id="photo">
+							 <div id="name"></div>
+						 </div>
+					 </button>
+				</div>
+			</div>
+		</div>
 	</nav>
-	<div class="container" style = "padding-top: 80px">
+	<div class="container" style="padding-top: 80px">
 		<div class="row">
-		<div class="col-sm-4">
-      		<h3>Technologies Used</h3>
-     		<p>In making our project, we utlized p5 speech recognition, Google Firebase as a database to store
-     		users and their corresponding pet, and Bootstrap to make our site look fabulous!</p>
-      		<p>The speech recognition was used as a way to make your pet feel more real; try saying "hi" or "hello" out loud to your pet!</p>
-      		<p>As for Firebase, we decided that it was one of the best ways, for our purposes, to store the properties of a user's pet and load them
-      			into the game.  But of course, with loading a pet, means that one must save a pet.  The game autosaves every minute when the pet's age updates, and
-      		if the user needs to log out before then, there's a handy save button right on the main menu that looks like a floppy disk.</p>
-   		</div>
-    	<div class="col-sm-4">
-      		<h3>Features</h3>
-     		  <p>This little pet packs a hefty amount of features considering the time frame we had for this project!</p>
-     		  <p>The pet, using the setInterval() function, has functions that automatically are called at specific time
-     		  intervals to make the pet get hungry, sad, and sick in real time!  The pet will also, when a user logs out and logs back in later, continue
-     		  to get hungry while the user is logged out and leaves it alone.  Be careful; your pet could die while you aren't there!</p>
-     		  <p>The pet performs actions such as pooping, getting ill, eating, going outside, and being loved.  These are either triggered automatically,
-     		  	or by buttons!  When a pet poops, the poop is stored as an object in the poop array, which is all cleaned up if the user presses the
-     		  toilet button.</p>
-     		  <p>As mentioned earlier, the state of the pet is saved every minute as an autosave, and can be manually saved by the user by pressing
-     		  the save button</p>
-    	</div>
-    	<div class="col-sm-4">
-      		<h3>Assets</h3>
-      		  <p>All of our images were hand drawn, including all icons, backgrounds, and character animations!  It was
-      		  a lot of extra work to make our own images, but it makes the product feel all the more handmade.</p>
-      		  <p>Unfortunately, we are not audio engineers.  All of the sounds in our project are rips of
-      		  sounds from Pokemon Emerald for Gameboy Advanced, including all background music.  Oh, and one extra
-      		  spooky tune from Pokemon Red/Blue...</p>
-      		  <p>All code was, of course, written by us!  The only exception to this is the speech recognition code, which we heavily
-      		  based off of other examples.</p>
+			<div class="col-sm-4">
+				<h3>Technologies Used</h3>
+				<p>In making our project, we utlized p5 speech recognition, Google Firebase as a database to store users and their corresponding pet, and Bootstrap to make our site look fabulous!</p>
+				<p>The speech recognition was used as a way to make your pet feel more real; try saying "hi" or "hello" out loud to your pet!</p>
+				<p>As for Firebase, we decided that it was one of the best ways, for our purposes, to store the properties of a user's pet and load them into the game. But of course, with loading a pet, means that one must save a pet. The game autosaves every minute
+					when the pet's age updates, and if the user needs to log out before then, there's a handy save button right on the main menu that looks like a floppy disk.</p>
+			</div>
+			<div class="col-sm-4">
+				<h3>Features</h3>
+				<p>This little pet packs a hefty amount of features considering the time frame we had for this project!</p>
+				<p>The pet, using the setInterval() function, has functions that automatically are called at specific time intervals to make the pet get hungry, sad, and sick in real time! The pet will also, when a user logs out and logs back in later, continue to get
+					hungry while the user is logged out and leaves it alone. Be careful; your pet could die while you aren't there!</p>
+				<p>The pet performs actions such as pooping, getting ill, eating, going outside, and being loved. These are either triggered automatically, or by buttons! When a pet poops, the poop is stored as an object in the poop array, which is all cleaned up if
+					the user presses the toilet button.</p>
+				<p>As mentioned earlier, the state of the pet is saved every minute as an autosave, and can be manually saved by the user by pressing the save button</p>
+			</div>
+			<div class="col-sm-4">
+				<h3>Assets</h3>
+				<p>All of our images were hand drawn, including all icons, backgrounds, and character animations! It was a lot of extra work to make our own images, but it makes the product feel all the more handmade.</p>
+				<p>Unfortunately, we are not audio engineers. All of the sounds in our project are rips of sounds from Pokemon Emerald for Gameboy Advanced, including all background music. Oh, and one extra spooky tune from Pokemon Red/Blue...</p>
+				<p>All code was, of course, written by us! The only exception to this is the speech recognition code, which we heavily based off of other examples.</p>
 
-    	</div>
+			</div>
+		</div>
 	</div>
-</div>
 </body>
+
 </html>

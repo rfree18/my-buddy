@@ -354,10 +354,9 @@ function draw() {
         //Code to make door open if user hovers on it
         displayDoorImage();
         // Don't open door if character is dead
-        if(doorIsClosed() || !myChar.properties.condition.alive){
+        if (doorIsClosed() || !myChar.properties.condition.alive) {
           image(closedDoor, 500, 290, 145, 252);
-        }
-        else{
+        } else {
           image(openDoor, 645, 290, 145, 252);
         }
       }
@@ -382,7 +381,7 @@ function draw() {
   seesHi = false;
 }
 //Similar to the drawWindow function in that it produces the correct door graphic depending on time of day
-function displayDoorImage(){
+function displayDoorImage() {
   date = new Date();
   if (date.getHours() >= 6 && date.getHours() < 9) {
     image(sunriseDoor, 500, 290, 145, 252);
@@ -395,10 +394,10 @@ function displayDoorImage(){
   }
 }
 //Function to determine if the door is open or closed
-function doorIsClosed(){
-  if(mouseX > 427.5 && mouseX < 572.5 && mouseY > 290-126 && mouseY < 290+126){
+function doorIsClosed() {
+  if (mouseX > 427.5 && mouseX < 572.5 && mouseY > 290 - 126 && mouseY < 290 + 126) {
     // Don't go outside if character is dead
-    if(mouseIsPressed && myChar.properties.condition.alive) {
+    if (mouseIsPressed && myChar.properties.condition.alive) {
       menuSound.play();
       isOutside = true;
       checkOutsideInterval = setInterval(function() {
@@ -407,8 +406,7 @@ function doorIsClosed(){
     }
 
     return false;
-  }
-  else{
+  } else {
     return true;
   }
 }

@@ -237,7 +237,7 @@ function Character(obj) {
     //Subtract from health
     //If health < 15, pet is ill
     //If health is 0, pet is dead
-    if(val) {
+    if (val) {
       this.properties.health -= val;
     }
 
@@ -354,9 +354,9 @@ function Character(obj) {
   };
   //Decrements from the hunger variable
   this.makeHungry = function(val) {
-    if(val) {
+    if (val) {
       this.properties.hunger -= val;
-      if(this.properties.hunger < 0) {
+      if (this.properties.hunger < 0) {
         this.properties.hunger = 0;
       }
     } else {
@@ -472,10 +472,10 @@ function Character(obj) {
     }
   }
 
- /*this.setUnlockable(unlockable) = function() {
-    this.properties.unlockables.unlockable = true;
-    saveGame();
-  }*/
+  /*this.setUnlockable(unlockable) = function() {
+     this.properties.unlockables.unlockable = true;
+     saveGame();
+   }*/
 
   //save the intervals from setIntervals into this variable
   this.intervalIds = this.setIntervals();
