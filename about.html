@@ -1,56 +1,128 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Virtual Pet</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-	<link rel="stylesheet" href="./css/styles.css" type="text/css">
+  <title>Virtual Pet</title>
 
-	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
-	<script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
-	<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="./css/styles.css" type="text/css">
+
+  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css" />
+
+  <script src="./server/config.js"></script>
+
+  <script src="./sketch/preload.js"></script>
+  <script src="./models/character.js"></script>
+
 </head>
-<body>
-	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-		 <a class="navbar-brand" style="text-align: left;" href="index.html">p5agotchi</a>
-		 <a class="nav-item nav-link" href="about.html">About</a>
-		 </div>
-	</nav>
-	<div class="container" style = "padding-top: 80px">
-		<div class="row">
-		<div class="col-sm-4">
-      		<h3>Technologies Used</h3>
-     		<p>In making our project, we utlized p5 speech recognition, Google Firebase as a database to store 
-     		users and their corresponding pet, and Bootstrap to make our site look fabulous!</p>
-      		<p>The speech recognition was used as a way to make your pet feel more real; try saying "hi" or "hello" out loud to your pet!</p>
-      		<p>As for Firebase, we decided that it was one of the best ways, for our purposes, to store the properties of a user's pet and load them
-      			into the game.  But of course, with loading a pet, means that one must save a pet.  The game autosaves every minute when the pet's age updates, and
-      		if the user needs to log out before then, there's a handy save button right on the main menu that looks like a floppy disk.</p>
-   		</div>
-    	<div class="col-sm-4">
-      		<h3>Features</h3>
-     		  <p>This little pet packs a hefty amount of features considering the time frame we had for this project!</p>
-     		  <p>The pet, using the setInterval() function, has functions that automatically are called at specific time
-     		  intervals to make the pet get hungry, sad, and sick in real time!  The pet will also, when a user logs out and logs back in later, continue
-     		  to get hungry while the user is logged out and leaves it alone.  Be careful; your pet could die while you aren't there!</p>
-     		  <p>The pet performs actions such as pooping, getting ill, eating, going outside, and being loved.  These are either triggered automatically,
-     		  	or by buttons!  When a pet poops, the poop is stored as an object in the poop array, which is all cleaned up if the user presses the
-     		  toilet button.</p>
-     		  <p>As mentioned earlier, the state of the pet is saved every minute as an autosave, and can be manually saved by the user by pressing
-     		  the save button</p>
-    	</div>
-    	<div class="col-sm-4">
-      		<h3>Assets</h3>        
-      		  <p>All of our images were hand drawn, including all icons, backgrounds, and character animations!  It was
-      		  a lot of extra work to make our own images, but it makes the product feel all the more handmade.</p>
-      		  <p>Unfortunately, we are not audio engineers.  All of the sounds in our project are rips of
-      		  sounds from Pokemon Emerald for Gameboy Advanced, including all background music.  Oh, and one extra
-      		  spooky tune from Pokemon Red/Blue...</p>
-      		  <p>All code was, of course, written by us!  The only exception to this is the speech recognition code, which we heavily
-      		  based off of other examples.</p>
 
-    	</div>
-	</div>
-</div>
+<body>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="navbar-brand" style="text-align: left;" href="index.html">My Buddy</a>
+        <a class="nav-item nav-link" href="about.html">About</a>
+        <a class="nav-item nav-link" href="unlock.html">Unlock</a>
+        <div class="" id="firebaseui-spa">
+          <div id="firebaseui-container" style="float: right;"></div>
+          <button type="button" id="sign-out" class="btn btn-outline-primary hidden" style="float: right;">
+						 <div id="photo-container">
+							 <img style="width: 30px; display: inline-table" id="photo">
+							 <div id="name"></div>
+						 </div>
+					 </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container" style="padding-top: 80px">
+    <!--<div class="row">
+      <div class="col-sm-4">
+        <h3>Technologies Used</h3>
+        <p>In making our project, we utlized p5 speech recognition, Google Firebase as a database to store users and their corresponding pet, and Bootstrap to make our site look fabulous!</p>
+        <p>The speech recognition was used as a way to make your pet feel more real; try saying "hi" or "hello" out loud to your pet!</p>
+        <p>As for Firebase, we decided that it was one of the best ways, for our purposes, to store the properties of a user's pet and load them into the game. But of course, with loading a pet, means that one must save a pet. The game autosaves every minute
+          when the pet's age updates, and if the user needs to log out before then, there's a handy save button right on the main menu that looks like a floppy disk.</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Features</h3>
+        <p>This little pet packs a hefty amount of features considering the time frame we had for this project!</p>
+        <p>The pet, using the setInterval() function, has functions that automatically are called at specific time intervals to make the pet get hungry, sad, and sick in real time! The pet will also, when a user logs out and logs back in later, continue
+          to get hungry while the user is logged out and leaves it alone. Be careful; your pet could die while you aren't there!</p>
+        <p>The pet performs actions such as pooping, getting ill, eating, going outside, and being loved. These are either triggered automatically, or by buttons! When a pet poops, the poop is stored as an object in the poop array, which is all cleaned up
+          if the user presses the toilet button.</p>
+        <p>As mentioned earlier, the state of the pet is saved every minute as an autosave, and can be manually saved by the user by pressing the save button</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Assets</h3>
+        <p>All of our images were hand drawn, including all icons, backgrounds, and character animations! It was a lot of extra work to make our own images, but it makes the product feel all the more handmade.</p>
+        <p>Unfortunately, we are not audio engineers. All of the sounds in our project are rips of sounds from Pokemon Emerald for Gameboy Advanced, including all background music. Oh, and one extra spooky tune from Pokemon Red/Blue...</p>
+        <p>All code was, of course, written by us! The only exception to this is the speech recognition code, which we heavily based off of other examples.</p>
+
+      </div>
+    </div> -->
+    <div id="aboutHead"><h1>Updates and About!</h1>
+      <p>Current version: 0.5 Beta</p>
+      <div class="row dark"><div class="col-sm-4"><a href="https://github.com/rfree18/my-buddy" style="color: white">Catch us on Github</a></div>
+      <div class="col-sm-4"><span style = "color: white">More links coming soon!</span></div>
+      <div class="col-sm-4"><a href="https://github.com/rfree18/my-buddy/projects/1" style="color: white">Planned bug fixes and features</a></div></div>
+    </div>
+    <div id="aboutContent">
+      <h1 style="text-align: center;">New Features</h1>
+      <h3>AR Tracking</h3>
+      <p>In the latest version of My Buddy, several new features have been implemented, including an unlock system of new food items
+      via augmented reality.  This system uses fiducial marker tracking to detect if specific patterns are present, with these
+      specific patterns being unlock keys for several different new food items!  Get 'em while food is free; in the next update,
+      currency (paying for your pet's food) should be implemented!</p>
+      <div class="pic-container"><img src = "./img/food/sushi.png"><img src="./img/food/pizza.png"><img src="./img/food/cake.png"></div>
+      <p>If you want these patterns, the files are available publicly on the <a href="https://github.com/rfree18/my-buddy">GitHub Page.</a>  Feel free to
+      download them and scan them in from your phone!</p>
+      <h3>Evolutions</h3>
+      <p>Finally, there are some new characters that we can welcome to our lineup!  This update introduces two new evolutions
+      from the base character, our favorite blue blob.  These characters can be attained after you raise your Buddy for one day, a year in their time,
+      and will be picked depending on how well you cared for your Buddy!</p>
+      <div class = "pic-container"><img src="./img/character_imgs/lightBulb/bulbFWD.png"><img src="./img/character_imgs/lightBulb/love2.png"><img src="./img/character_imgs/lightBulb/eat1.png"></div>
+      <p>Our first character is a little lightbulb who's just looking to brighten someone's day.  You've gotta take really good care of your Buddy if you want to get a chance to get to raise 
+      this character!</p>
+      <div class="pic-container"><img src="./img/character_imgs/purpleEmo/purpleFWD.png"><img src="./img/character_imgs/purpleEmo/mad2.png"><img src="./img/character_imgs/purpleEmo/love2.png"></div>
+      <p>Uh oh...if you neglect your first buddy, you could end up with this mischevious character!  They smile when they tell you no, and overall seem to always be causing drama and sulking
+      around.  That is, except when they can get a bite to eat, or if they're feeling particularly affectionate with you.  It's not just a phase, mom!</p>
+      <h3>Going Outside</h3>
+      <p>It's now easier than ever for your buddy to leave the house!  Have you ever sat there, thinking to yourself: does this thing just jump out the window when I hit the outdoors button?
+      I liked the thought of that at first, admittedly; but your buddies deserve better than that.</p>
+      <div class="pic-container"><img src="./img/door/sunsetDoor.png"><img src="./img/door.png"></div>
+      <p>From now on, your buddy will go outside via the front door, which opens conveniently to show the time of day outside when your mouse hovers over the door.  Neat, huh?</p>
+      <h3>Expect some holiday cheer!</h3>
+      <p>A new feature of this update is objects that are drawn into your buddy's room during certain periods of time!  Right now, the amound of these may be rather minimal, but
+      have no fear; there will be many more drawn and written in for future updates.  Not to spoil anything, but we'll give you a little taste of what's to come...</p>
+      <div class="pic-container"><img src="./img/dateSpecific/christmasTree.png"></div>
+      <h3>Bug Fixes & Code Improvement</h3>
+      <p>This update includes <strong>a lot</strong> of bug fixes, including issues with sounds playing at the wrong times, incorrect incrementing of certain variables, shortening of some
+      obnoxiously long animations such as eating, and other general fixes.</p>
+      <p>A lot of the code from the original version of this project has, by this point, been refactored into much more clean and compact code.  We still have a long way to go,
+      but things are looking a lot more tidy on our end!</p>
+      <h3>For the Future...</h3>
+      <p>We have a lot of exciting things planned for the future, including more characters, mini games, implementation of a currency system, and a shopping system that will allow 
+      us to add many more items, whether they're food items, accessories/clothing (also for a future update), or toys that will influence the way your buddy grows up.  The
+      possibilities are endless, and we're excited to keep implementing new features!</p>
+      <p>Thanks for reading!  We hope you enjoy playing with your buddy! :)</p>
+    </div>
+  <div style="text-align: center; margin: auto"><img src="./img/greenGuy.png"></div>
+   </div>
+
+  <script src="./server/app.js"></script>
 </body>
+
 </html>
