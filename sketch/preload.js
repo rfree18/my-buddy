@@ -49,6 +49,18 @@ var poopOnScreen = [];
 var foodButtons = [];
 var appleIcon;
 var cookieIcon;
+var cakeIcon;
+var pearIcon;
+var sushiIcon;
+var pizzaIcon;
+var tacoIcon;
+
+var cakeArr = [];
+var pearArr = [];
+var sushiArr = [];
+var pizzaArr = [];
+var tacoArr = [];
+
 var foodName;
 
 var appleArr = [];
@@ -110,6 +122,8 @@ var dayDoor;
 
 var closedDoor;
 var openDoor;
+
+var foods = [];
 
 //Button object
 function Button(name, img, x, y) {
@@ -177,7 +191,6 @@ function preload() {
   lightFront = loadImage("img/character_imgs/lightBulb/bulbFWD.png");
   //END TEST
 
-
   //Load in images
   day = loadImage("img/outside/day.png");
   night = loadImage("img/outside/night.png");
@@ -224,14 +237,33 @@ function preload() {
 
   appleIcon = (loadImage("img/food/appleIcon.png"));
   cookieIcon = (loadImage("img/food/cookieIcon.png"));
+  pearIcon = loadImage("img/food/pearIcon.png");
+  cakeIcon = loadImage("img/food/cakeIcon.png");
+  pizzaIcon = loadImage("img/food/pizzaIcon.png");
+  sushiIcon = loadImage("img/food/sushiIcon.png");
+  tacoIcon = loadImage("img/food/tacoIcon.png");
+
   eatImg = [];
   sickImg = [];
   madImg = [];
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 1; i < 4; i++) {
     appleArr.push(loadImage("img/food/apple" + i + ".png"));
     cookieArr.push(loadImage("img/food/cookie" + i + ".png"));
+    cakeArr.push(loadImage("img/food/cake" + i + ".png"));
+    pizzaArr.push(loadImage("img/food/pizza" + i + ".png"));
+    sushiArr.push(loadImage("img/food/sushi" + i + ".png"));
+    pearArr.push(loadImage("img/food/pear" + i + ".png"));
+    tacoArr.push(loadImage("img/food/taco" + i + ".png"));
+
   }
+  foods.push(new Food(loadImage("img/food/apple0.png"), "Apple", 5, 0, -5, 10, appleArr));
+  foods.push(new Food(loadImage("img/food/cookie0.png"), "Cookie", -5, 0, 10, 5, cookieArr));
+  foods.push(new Food(loadImage("img/food/cake.png"), "Cake", -7.5, 0, 15, 10, cakeArr));
+  foods.push(new Food(loadImage("img/food/sushi.png"), "Sushi", 2, 0, 3, 150, sushiArr));
+  foods.push(new Food(loadImage("img/food/pear.png"), "Pear", 5, 0, -2, 7.5, pearArr));
+  foods.push(new Food(loadImage("img/food/pizza.png"), "Pizza", -5, 0, 5, 15, pizzaArr));
+  foods.push(new Food(loadImage("img/food/taco.png"), "Taco", 0, 0, 2, 17, tacoArr));
 
   for (let i = 1; i < 3; i++) {
     eatImg.push(loadImage("img/character_imgs/blueBaby/eat" + i + ".png"));

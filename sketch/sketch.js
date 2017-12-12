@@ -34,7 +34,8 @@ function setup() {
   buttons.push(new Button("Save", saveButton, 600, 675));
 
   foodButtons.push(new Button("Apple", appleIcon, 250, 400));
-  foodButtons.push(new Button("Cookie", cookieIcon, 500, 400))
+  foodButtons.push(new Button("Cookie", cookieIcon, 500, 400));
+
   failSound.setVolume(.5);
   menuSound.setVolume(.5);
   nomSound.setVolume(.25);
@@ -70,6 +71,7 @@ function draw() {
       bgDeadSongBegin.play();
     }
     //If user is on the food menu
+    pushNewFoodIcons();
     if (foodmenu) {
       image(menuBG, 375, 375);
       text("Pick a food to eat!", 375, 100);
@@ -281,32 +283,16 @@ function cycleFoodButtons() {
   }
 }
 //Draws the eating animation for the character
-function foodAnimation() {
-  if (foodName === "Apple") {
+function foodAnimation(food) {
     if (foodAniTimer > 150) {
-      image(appleArr[0], 425, 400, 100, 100);
+      food.display(0);
     } else if (foodAniTimer > 100) {
-      image(appleArr[1], 425, 400, 100, 100);
+      food.display(1);
     } else if (foodAniTimer > 50) {
-      image(appleArr[2], 425, 400, 100, 100);
+      food.display(2);
     } else if (foodAniTimer > 25) {
-      image(appleArr[3], 425, 400, 100, 100);
-    } else {
-
+      food.display(3);
     }
-  } else if (foodName === "Cookie") {
-    if (foodAniTimer > 150) {
-      image(cookieArr[0], 425, 375);
-    } else if (foodAniTimer > 100) {
-      image(cookieArr[1], 425, 375);
-    } else if (foodAniTimer > 50) {
-      image(cookieArr[2], 425, 375);
-    } else if (foodAniTimer > 25) {
-      image(cookieArr[3], 425, 375);
-    } else {
-
-    }
-  }
   image(eatImg[charEatFr], 300, myChar.yPos);
   if (foodAniTimer % 15 === 0) {
     if (charEatFr === 0) {
@@ -413,5 +399,35 @@ function parseResult() {
   if (canSayHi && (myRec.resultString.toLowerCase() === "hi" || myRec.resultString.toLowerCase() === "hello")) {
     seesHi = true;
     canSayHi = false;
+  }
+}
+//Check which foods the user has unlocked
+function pushNewFoodIcons(){
+  if(myChar.properties.unlockables.cake){
+    foodButtons.push(new Button("Cake", cakeIcon, 600, 400));
+    foodButtons[0].xPos = 200;
+    foodButtons[1].xPos = 400;
+  }
+  if(myChar.properties.unlockables.taco){
+    if(foodButtons.length === 2){
+      foodButtons.push(new Button("Taco", tacoIcon, 600, 400));
+      foodButtons[0].xPos = 200;
+      foodButtons[1].xPos = 400;
+    }
+    else{
+      foodButtons.push(new Button("Taco", tacoIcon, 600, 400));
+      foodButtons[0].xPos = 150;
+      foodButtons[1].xPos = 300;
+      foodButtons[2].xPos = 450;
+    }
+  }
+  if(myChar.properties.unlockables.pear){
+
+  }
+  if(myChar.properties.unlockables.sushi){
+
+  }
+  if(myChar.properties.unlockables.pizza){
+    
   }
 }

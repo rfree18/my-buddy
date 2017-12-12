@@ -245,7 +245,7 @@ function Character(obj) {
       this.properties.health -= 1;
     }
 
-    if (this.properties.health <= 0) {
+    if (this.properties.health <= 0 && this.properties.alive === true) {
       this.die();
     } else if (this.properties.health < 15) {
       this.properties.condition.sick = true;
@@ -300,6 +300,7 @@ function Character(obj) {
   this.reset = function() {
     this.properties = {
       name: "",
+      money: 0,
       health: 50,
       hunger: 0,
       dirty: 0,
@@ -316,6 +317,7 @@ function Character(obj) {
         minutes: 0,
         days: 0
       },
+      unlockables: this.properties.unlockables,
       date: Date.now()
     };
     //go back to playing the normal bg song
@@ -333,16 +335,7 @@ function Character(obj) {
     //Possibly give love if the food is good
     //Possibly take love if the food is disliked by this character
     if (this.properties.hunger < this.maxHunger) {
-      if (food === "Apple") {
-        this.properties.hunger += 10;
-        this.properties.health += 5;
-        return true;
-      } else if (food === "Cookie") {
-        this.hunger += 10;
-        this.health -= 5;
-        this.giveLove();
-        return true;
-      }
+        return true
     }
     //If the character is full, return false which signals the "no" animation
     else {
@@ -361,7 +354,6 @@ function Character(obj) {
       if (this.properties.hunger < 0) {
         for (let i = this.properties.hunger; i < 0; i++) {
           this.properties.hunger++;
-          this.decrementHealth();
         }
 
       }
@@ -482,6 +474,7 @@ function Character(obj) {
     // Properties contains everything that should be stored in database
     this.properties = {
       name: "",
+      money: 0,
       health: 50,
       hunger: 0,
       dirty: 0,
@@ -506,6 +499,7 @@ function Character(obj) {
   //exists in memory, and decrement variables according to how long the user has been logged out.
   else {
     this.properties = obj;
+    this.properties.money = 0;
 
     // Number of minutes passed
     const diff = Math.floor((Date.now() - this.properties.date) / 1000 / 60);
