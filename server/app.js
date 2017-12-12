@@ -56,17 +56,17 @@ var getCharacter = function(user) {
   });
 }
 
-var saveGame = function(callback) {
+var saveGame = function() {
   // Attach latest timestamp before sending
   myChar.properties.date = Date.now();
-  sendCharacter(currUser, callback);
+  return sendCharacter(currUser);
 }
 
-var sendCharacter = function(user, callback) {
-  db.collection("users").doc(user.uid).set({
+var sendCharacter = function(user) {
+  return db.collection("users").doc(user.uid).set({
     name: user.displayName,
     creature: myChar.properties
-  }).then(callback);
+  });
 }
 
 /**

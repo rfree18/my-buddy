@@ -50,9 +50,8 @@ function draw() {
         window.location = 'index.html';
       } else {
         isLoading = true;
-        myChar.setUnlockable(marker.tag.id, function() {
+        myChar.setUnlockable(marker.tag.id).then(function() {
           isLoading = false;
-          console.log("hello!");
           window.location = 'index.html';
         });
       }

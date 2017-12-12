@@ -469,9 +469,9 @@ function Character(obj) {
     }
   }
 
-  this.setUnlockable = function(unlockable, callback) {
+  this.setUnlockable = function(unlockable) {
      this.properties.unlockables[unlockable] = true;
-     saveGame(callback);
+     return saveGame();
    }
 
   //save the intervals from setIntervals into this variable
