@@ -136,6 +136,7 @@ var foods = [];
 
 var presentationImg;
 
+var petImgs;
 
 //Button object
 function Button(name, img, x, y) {
