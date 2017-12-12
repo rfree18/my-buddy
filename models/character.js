@@ -12,10 +12,9 @@ function Character(obj) {
   //booleans that affect the display function
   this.isPooping = false;
   this.isBeingMedicated = false;
+  this.evolving = false;
 
   //Used for the walk method
-  this.walkCycle = walkImg;
-  this.frontImage = petImg;
   this.walkDir = 1;
   this.walkUp = true;
   this.walkCycleCounter = 0;
@@ -43,8 +42,8 @@ function Character(obj) {
       if (!bgDeadSongBegin.isPlaying() && !bgDeadSong.isPlaying()) {
         bgDeadSong.loop();
       }
-      charDeadImg.draw(375, this.yPos, (imgNum) => {
-        if (imgNum === charDeadImg.images.length - 1) {
+      charDeadImg[this.properties.stage].draw(375, this.yPos, (imgNum) => {
+        if (imgNum === charDeadImg[this.properties.stage].images.length - 1) {
           ghosties.draw(375, this.yPos - 100);
         }
       });
@@ -54,12 +53,29 @@ function Character(obj) {
     else if (this.properties.condition.asleep) {
       //TO BE IMPLEMENTED
     }
+    else if(this.evolving){
+      if(this.frameState === 0){
+        //temporary for 3 characters
+        image(this.lastFrontImage, 375, this.yPos);
+      }
+      else{
+        image(this.frontImage, 375, this.yPos);
+      }
+      if(this.frameTimer % 15 === 0){
+        this.frameState === 0 ? this.frameState = 1 : this.frameState = 0;
+      }
+      this.frameTimer--;
+      if(this.frameTimer === 0){
+        this.xPos = 375;
+        this.evolving = false;
+        this.loveAnimation();
+      }
+    }
     //If the animation of curing the pet is going on...
     else if (this.isBeingMedicated) {
-      image(charPoopImg, 375, this.yPos);
+      image(charPoopImg[this.properties.stage], 375, this.yPos);
       syringes.draw(420, 330, (num) => {
         if (num === syringes.images.length - 1) {
-          console.log('yay');
           this.isBeingMedicated = false;
           syringes.reset();
         }
@@ -68,12 +84,12 @@ function Character(obj) {
     //If it's performing the love animation...
     else if (this.loveAni) {
       if (this.frameState === 0) {
-        image(loveAni[0], this.xPos, this.yPos);
+        image(loveAni[0 + (2*this.properties.stage)], this.xPos, this.yPos);
         if (this.frameTimer % 15 === 0) {
           this.frameState = 1;
         }
       } else {
-        image(loveAni[1], this.xPos, this.yPos - 5);
+        image(loveAni[1 + (this.properties.stage *2)], this.xPos, this.yPos - 5);
         if (this.frameTimer % 15 === 0) {
           this.frameState = 0;
         }
@@ -86,13 +102,13 @@ function Character(obj) {
     //If it's shaking it's head...
     else if (this.noAni) {
       if (this.frameState === 0) {
-        image(madImg[0], 375, this.yPos);
+        image(madImg[0 + (2*this.properties.stage)], 375, this.yPos);
         this.frameTimer--;
         if (this.frameTimer % 15 === 0) {
           this.frameState = 1;
         }
       } else {
-        image(madImg[1], 375, this.yPos);
+        image(madImg[1+ (2*this.properties.stage)], 375, this.yPos);
         this.frameTimer--;
         if (this.frameTimer % 15 === 0) {
           this.frameState = 0;
@@ -105,13 +121,13 @@ function Character(obj) {
     //If it's pooping...
     else if (this.isPooping) {
       if (this.frameState === 0) {
-        image(charPoopImg, this.xPos - 3, this.yPos);
+        image(charPoopImg[this.properties.stage], this.xPos - 3, this.yPos);
         this.frameTimer--;
         if (this.frameTimer % 15 === 0) {
           this.frameState = 1;
         }
       } else {
-        image(charPoopImg, this.xPos + 3, this.yPos);
+        image(charPoopImg[this.properties.stage], this.xPos + 3, this.yPos);
         this.frameTimer--;
         if (this.frameTimer % 15 === 0) {
           this.frameState = 0;
@@ -126,14 +142,14 @@ function Character(obj) {
     //If it's sick...
     else if (this.properties.condition.sick) {
       if (this.frameState === 0) {
-        image(sickImg[0], 375, this.yPos);
+        image(sickImg[0 + (2*this.properties.stage)], 375, this.yPos);
         this.frameTimer--;
         if (this.frameTimer === 0) {
           this.frameState = 1;
           this.frameTimer = 20;
         }
       } else {
-        image(sickImg[1], 375, this.yPos);
+        image(sickImg[1+ (2*this.properties.stage)], 375, this.yPos);
         this.frameTimer--;
         if (this.frameTimer === 0) {
           this.frameState = 0;
@@ -226,6 +242,9 @@ function Character(obj) {
     while (this.properties.age.hours >= 24) {
       this.properties.age.hours -= 24;
       this.properties.age.days += 1;
+      if(this.properties.age.days === 1){
+        this.changeStage();
+      }
     }
 
     // Auto-save character only during interval
@@ -252,9 +271,21 @@ function Character(obj) {
     }
 
   };
+  this.evolutionAnimation = function(){
+    this.frameTimer = 300;
+    this.evolving = true;
+  }
   this.changeStage = function() {
     //Using the health as one variable, and another later implemented
     //"good care" variable, change the stage to the appropriate character
+    this.lastFrontImage = petImgs[this.properties.stage]
+    if(this.properties.health < 25){
+      this.properties.stage = 1;
+    }else{
+      this.properties.stage = 2;
+    }
+    this.frontImage = petImgs[this.properties.stage];
+    this.evolutionAnimation();
   };
   //Determine if the character will respond to the love button
   this.loveButton = function() {
@@ -318,8 +349,9 @@ function Character(obj) {
         days: 0
       },
       unlockables: this.properties.unlockables,
-      date: Date.now()
+      date: Date.now(),
     };
+    this.frontImage = petImgs[this.properties.stage];
     //go back to playing the normal bg song
     if (bgDeadSong.isPlaying() || bgDeadSongBegin.isPlaying()) {
       bgDeadSong.stop();
@@ -327,7 +359,7 @@ function Character(obj) {
       bgSong.loop();
     }
 
-    charDeadImg.reset();
+    charDeadImg[this.properties.stage].reset();
   }
   //Takes in a string, food, and determines what feed will do
   this.feed = function(food) {
@@ -335,6 +367,7 @@ function Character(obj) {
     //Possibly give love if the food is good
     //Possibly take love if the food is disliked by this character
     if (this.properties.hunger < this.maxHunger) {
+        food.eat();
         return true;
     }
     //If the character is full, return false which signals the "no" animation
@@ -404,10 +437,10 @@ function Character(obj) {
     //walks left on the screen
     if (this.walkUp) {
       if (this.walkTimer > 0) {
-        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], this.xPos, this.yPos);
         this.walkTimer--;
       } else {
-        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], this.xPos, this.yPos);
         this.walkCycleCounter++;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 4) {
@@ -416,10 +449,10 @@ function Character(obj) {
       }
     } else {
       if (this.walkTimer > 0) {
-        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], this.xPos, this.yPos);
         this.walkTimer--;
       } else {
-        image(this.walkCycle[this.walkCycleCounter], this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], this.xPos, this.yPos);
         this.walkCycleCounter--;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 0) {
@@ -433,11 +466,11 @@ function Character(obj) {
     if (this.walkUp) {
       if (this.walkTimer > 0) {
         scale(-1, 1);
-        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], -1 * this.xPos, this.yPos);
         this.walkTimer--;
       } else {
         scale(-1, 1);
-        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], -1 * this.xPos, this.yPos);
         this.walkCycleCounter++;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 4) {
@@ -447,11 +480,11 @@ function Character(obj) {
     } else {
       if (this.walkTimer > 0) {
         scale(-1, 1);
-        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], -1 * this.xPos, this.yPos);
         this.walkTimer--;
       } else {
         scale(-1, 1);
-        image(this.walkCycle[this.walkCycleCounter], -1 * this.xPos, this.yPos);
+        image(this.walkCycle[this.walkCycleCounter+ (5*this.properties.stage)], -1 * this.xPos, this.yPos);
         this.walkCycleCounter--;
         this.walkTimer = 8;
         if (this.walkCycleCounter == 0) {
@@ -512,4 +545,7 @@ function Character(obj) {
     this.updateAge(diff);
 
   }
+  this.walkCycle = walkImg;
+  this.frontImage = petImgs[this.properties.stage];
+  this.lastFrontImage = petImgs[this.properties.stage];
 }

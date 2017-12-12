@@ -26,7 +26,7 @@ function setup() {
   imageMode(CENTER);
   buttons.push(new Button("Status", statusButton, 150, 525));
   buttons.push(new Button("Toilet", toiletButton, 450, 525));
-  buttons.push(new Button("Outside", outsideButton, 300, 675));
+  buttons.push(new Button("Games", minigameButton, 300, 675));
   buttons.push(new Button("Love", loveButton, 150, 675));
   buttons.push(new Button("Food", foodButtonPic, 300, 525));
   buttons.push(new Button("Medicine", medecineButtonPic, 600, 525));
@@ -92,7 +92,7 @@ function draw() {
       image(bg, 375, 375, 750, 750);
       if (firstFeed) {
         for(let i = 0; i < foods.length; i++){
-          if(foods[i].name == foodName){
+          if(foods[i].name === foodName){
             tempFood = foods[i];
           }
         }
@@ -153,6 +153,7 @@ function draw() {
         } else {
           image(openDoor, 645, 290, 145, 252);
         }
+        displayDateSpecific();
       }
       drawPoop();
       //If the user speaks the words "hello" or "hi" into the mic
@@ -185,6 +186,14 @@ function displayDoorImage() {
     image(sunsetDoor, 500, 290, 145, 252);
   } else if (date.getHours() >= 20 || date.getHours() < 8) {
     image(nightDoor, 500, 290, 145, 252);
+  }
+}
+//Display any images meant for specific dates
+//TO DO: MAKE INTO A CLASS
+function displayDateSpecific(){
+  date = new Date();
+  if(date.getDate() === 12 && date.getMonth() === 11){
+    image(presentationImg, 150, 350);
   }
 }
 //Function to determine if the door is open or closed
@@ -298,7 +307,7 @@ function foodAnimation(food) {
     } else if (foodAniTimer > 25) {
       food.display(3);
     }
-  image(eatImg[charEatFr], 300, myChar.yPos);
+  image(eatImg[charEatFr + (myChar.properties.stage*2)], 300, myChar.yPos);
   if (foodAniTimer % 15 === 0) {
     if (charEatFr === 0) {
       nomSound.play();
@@ -352,7 +361,7 @@ function displayStatusMenu() {
   text("Status", 375, 100);
   fill(0);
   text("Age: " + myChar.properties.age.days + " years old", 525, 200);
-  image(petImg, 150, 250);
+  image(petImgs[myChar.properties.stage], 150, 250);
 }
 //Draw the window in the house, which changes depending on the time of day
 function drawWindow() {

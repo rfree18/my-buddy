@@ -36,6 +36,7 @@ var charEatFr = 0;
 
 var loveButton;
 var statusButton;
+var minigameButton;
 var infoButton;
 var saveButton;
 var version;
@@ -133,6 +134,9 @@ var openDoor;
 
 var foods = [];
 
+var presentationImg;
+
+
 //Button object
 function Button(name, img, x, y) {
   this.name = name;
@@ -189,15 +193,23 @@ function preload() {
   resetButton = new Button("Reset", loadImage('img/buttons/reset.png'), 650, 100);
 
   walkImg = [];
-  for (let i = 1; i <= 5; i++) {
-    walkImg.push(loadImage("img/character_imgs/blueBaby/walk/walk" + i + ".png"));
-    newWalkImg.push(loadImage("img/character_imgs/purpleEmo/walk/" + i + ".png"));
-    lightWalk.push(loadImage("img/character_imgs/lightBulb/walk/" + i + ".png"));
+  for (let i = 1; i <= 15; i++) {
+    if(i<=5){
+      walkImg.push(loadImage("img/character_imgs/blueBaby/walk/walk" + i + ".png"));
+    }
+    else if(i <= 10){
+      walkImg.push(loadImage("img/character_imgs/purpleEmo/walk/" + (i-5) + ".png"));
+    }
+    else{
+      walkImg.push(loadImage("img/character_imgs/lightBulb/walk/" + (i-10) + ".png"));
+    }
   }
-  //TEST
-  newFrontFace = loadImage("img/character_imgs/purpleEmo/purpleFWD.png");
-  lightFront = loadImage("img/character_imgs/lightBulb/bulbFWD.png");
-  //END TEST
+  petImgs = [];
+  petImgs.push(loadImage("img/character_imgs/blueBaby/babyFWD.png"));
+  petImgs.push(loadImage("img/character_imgs/purpleEmo/purpleFWD.png"));
+  petImgs.push(loadImage("img/character_imgs/lightBulb/bulbFWD.png"));
+
+  presentationImg = loadImage("img/dateSpecific/Dec12.png");
 
   //Load in images
   day = loadImage("img/outside/day.png");
@@ -215,16 +227,16 @@ function preload() {
   sunsetDoor = loadImage("img/door/sunsetDoor.png");
 
   infoMenu = loadImage("img/infoScreen.png");
-  version = "Alpha 1.0";
+  version = "Beta 0.5";
   statusScreen = loadImage("img/status/menuBG.png");
   heart = loadImage("img/status/heart.png");
 
-  petImg = loadImage("img/character_imgs/blueBaby/babyFWD.png");
   bg = loadImage("img/defaultBG.png");
   menuBG = loadImage("img/menuBG.png");
   foodButtonPic = loadImage("img/buttons/food.png");
   medecineButtonPic = loadImage("img/buttons/medecine.png");
-  outsideButton = loadImage("img/buttons/outside.png");
+  //outsideButton = loadImage("img/buttons/outside.png");
+  minigameButton = loadImage("img/buttons/minigame.png");
   toiletButton = loadImage("img/buttons/toilet.png");
   loveButton = loadImage("img/buttons/love.png");
   statusButton = loadImage("img/buttons/status.png");
@@ -268,22 +280,41 @@ function preload() {
   foods.push(new Food(loadImage("img/food/apple0.png"), "Apple", 5, 0, -5, 10, appleArr));
   foods.push(new Food(loadImage("img/food/cookie0.png"), "Cookie", -5, 0, 10, 5, cookieArr));
   foods.push(new Food(loadImage("img/food/cake.png"), "Cake", -7.5, 0, 15, 10, cakeArr));
-  foods.push(new Food(loadImage("img/food/sushi.png"), "Sushi", 2, 0, 3, 150, sushiArr));
+  foods.push(new Food(loadImage("img/food/sushi.png"), "Sushi", 2, 0, 2, 15, sushiArr));
   foods.push(new Food(loadImage("img/food/pear.png"), "Pear", 5, 0, -2, 7.5, pearArr));
   foods.push(new Food(loadImage("img/food/pizza.png"), "Pizza", -5, 0, 5, 15, pizzaArr));
   foods.push(new Food(loadImage("img/food/taco.png"), "Taco", 0, 0, 2, 17, tacoArr));
 
-  for (let i = 1; i < 3; i++) {
-    eatImg.push(loadImage("img/character_imgs/blueBaby/eat" + i + ".png"));
-    sickImg.push(loadImage("img/character_imgs/blueBaby/sick" + i + ".png"));
-    madImg.push(loadImage("img/character_imgs/blueBaby/mad" + i + ".png"));
-    loveAni.push(loadImage("img/character_imgs/blueBaby/love" + i + ".png"));
+  for (let i = 1; i < 7; i++) {
+    if(i < 3){
+      eatImg.push(loadImage("img/character_imgs/blueBaby/eat" + i + ".png"));
+      sickImg.push(loadImage("img/character_imgs/blueBaby/sick" + i + ".png"));
+      madImg.push(loadImage("img/character_imgs/blueBaby/mad" + i + ".png"));
+      loveAni.push(loadImage("img/character_imgs/blueBaby/love" + i + ".png"));
+    }
+    else if(i < 5){
+      eatImg.push(loadImage("img/character_imgs/purpleEmo/eat" + (i-2) + ".png"));
+      sickImg.push(loadImage("img/character_imgs/purpleEmo/sick" + (i-2) + ".png"));
+      madImg.push(loadImage("img/character_imgs/purpleEmo/mad" + (i-2) + ".png"));
+      loveAni.push(loadImage("img/character_imgs/purpleEmo/love" + (i-2) + ".png"));
+    }else{
+      eatImg.push(loadImage("img/character_imgs/lightBulb/eat" + (i-4) + ".png"));
+      sickImg.push(loadImage("img/character_imgs/lightBulb/sick" + (i-4) + ".png"));
+      madImg.push(loadImage("img/character_imgs/lightBulb/mad" + (i-4) + ".png"));
+      loveAni.push(loadImage("img/character_imgs/lightBulb/love" + (i-4) + ".png"));
+    }
   }
 
   syringes = new AnimatedImage("img/animations/syringe/", ".png", 5, 20, false);
 
-  charPoopingImg = loadImage("img/character_imgs/blueBaby/pooping.png");
+  charPoopImg = [];
+  charPoopImg.push(loadImage("img/character_imgs/blueBaby/pooping.png"));
+  charPoopImg.push(loadImage("img/character_imgs/purpleEmo/pooping.png"));
+  charPoopImg.push(loadImage("img/character_imgs/lightBulb/pooping.png"));
 
-  charDeadImg = new AnimatedImage("img/character_imgs/blueBaby/death/", ".png", 10, 20, false);
+  charDeadImg = [];
+  charDeadImg.push(new AnimatedImage("img/character_imgs/blueBaby/death/", ".png", 10, 20, false));
+  charDeadImg.push(new AnimatedImage("img/character_imgs/purpleEmo/death/", ".png", 10, 20, false));
+  charDeadImg.push(new AnimatedImage("img/character_imgs/lightBulb/death/", ".png", 10, 20, false));
 
 }

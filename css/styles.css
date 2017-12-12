@@ -41,3 +41,17 @@ body{
 	padding-top:65px;
 	padding-bottom: 35px;
 }
+#aboutHead{
+	margin: auto;
+	text-align: center;
+}
+.dark{
+	background-color: #222222;
+}
+#aboutContent{
+	text-align: justify;
+}
+.pic-container{
+	text-align: center;
+	margin: auto;
+}
