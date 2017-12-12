@@ -1,6 +1,7 @@
 // create a variable to hold our world object
 var world;
 var myChar;
+var isLoading;
 
 // create variables to hold our markers
 var markers = [];
@@ -8,6 +9,8 @@ var markers = [];
 function setup() {
   // create our world (this also creates a p5 canvas for us)
   world = new World('ARScene');
+
+  isLoading = false;
 
   const markerTags = document.querySelectorAll('a-marker');
   markerTags.forEach((tag) => {
@@ -38,14 +41,21 @@ function setup() {
 function draw() {
 
   markers.forEach((marker) => {
-    if (marker.isVisible() && myChar) {
+    if (marker.isVisible() && myChar && !isLoading) {
       if (myChar.properties.unlockables === undefined) {
         myChar.properties.unlockables = {};
       }
-      myChar.setUnlockable(marker.tag.id, function() {
-        console.log("hello!");
+
+      if(myChar.properties.unlockables[marker.tag.id]) {
         window.location = 'index.html';
-      });
+      } else {
+        isLoading = true;
+        myChar.setUnlockable(marker.tag.id, function() {
+          isLoading = false;
+          console.log("hello!");
+          window.location = 'index.html';
+        });
+      }
     }
   });
 
