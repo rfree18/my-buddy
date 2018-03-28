@@ -62,7 +62,7 @@ function draw() {
   if (currUser === undefined) {
     text("Please login to continue", 375, 375);
   } else if (timer > 0) {
-    text(`Welcome ${currUser.displayName}!`, 375, 375);
+    text(`Welcome ${currUser.name}!`, 375, 375);
     timer--;
   } else {
     //If dead, play the right song

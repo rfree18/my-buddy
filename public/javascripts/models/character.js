@@ -546,6 +546,7 @@ function Character(obj) {
 
   }
   this.walkCycle = walkImg;
+  console.log(this.properties);
   this.frontImage = petImgs[this.properties.stage];
   this.lastFrontImage = petImgs[this.properties.stage];
 }

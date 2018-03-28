@@ -1,0 +1,22 @@
+{
+  "name": "my-buddy",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-session": "^1.15.6",
+    "hbs": "~4.0.1",
+    "http-errors": "~1.6.2",
+    "mongoose": "^5.0.12",
+    "mongoose-find-or-create": "^1.3.1",
+    "morgan": "~1.9.0",
+    "nconf": "^0.10.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0"
+  }
+}
