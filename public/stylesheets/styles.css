@@ -24,9 +24,9 @@ body{
 	float: right;
 }
 
-#firebaseui-spa {
+#btn-container {
 	position: absolute;
-	right: 0px;
+	right: 15px;
 	display: inline-flex;
 }
 

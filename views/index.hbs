@@ -1,29 +1,7 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="navbar-brand" style="text-align: left;" href="index.html">My Buddy</a>
-      <a class="nav-item nav-link" href="about.html">About</a>
-      <a class="nav-item nav-link" href="unlock.html">Unlock</a>
-      <div class="" id="firebaseui-spa">
-        <div id="firebaseui-container" style="float: right;"></div>
-        <button type="button" id="sign-out" class="btn btn-outline-primary hidden" style="float: right;">
-						 <div id="photo-container">
-							 <img style="width: 30px; display: inline-table" id="photo">
-							 <div id="name"></div>
-						 </div>
-					 </button>
-      </div>
-    </div>
-  </div>
-</nav>
 <div id="sketch-holder" class="col-md-12">
 </div>
 <!-- Auth handling JS should go at end to prevent element errors -->
 <script>
-  var currUser
   window.onload = function() {
     var decodedJson = decodeURIComponent("{{{encodedJson}}}");
     currUser = JSON.parse(decodedJson);

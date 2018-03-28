@@ -12,31 +12,81 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="/stylesheets/styles.css" type="text/css">
-  <script src="./server/config.js"></script>
 
-  <!-- A-Frame VR Library -->
-  <script src="/javascripts/libraries/aframe.min.js"></script>
+  {{#if isGame}}
+    <!-- A-Frame VR Library -->
+    <script src="/javascripts/libraries/aframe.min.js"></script>
 
-  <!-- ARToolKit for A-Frame VR Library -->
-  <script src='/javascripts/libraries/aframe-ar.js'></script>
+    <!-- ARToolKit for A-Frame VR Library -->
+    <script src='/javascripts/libraries/aframe-ar.js'></script>
 
-  <script src="/javascripts/libraries/p5.min.js" type="text/javascript"></script>
-  <script src="/javascripts/libraries/p5.dom.js" type="text/javascript"></script>
-  <script src="/javascripts/libraries/p5.sound.js" type="text/javascript"></script>
-  <script src="/javascripts/libraries/p5.speech.js" type="text/javascript"></script>
+    <script src="/javascripts/libraries/p5.min.js" type="text/javascript"></script>
+    <script src="/javascripts/libraries/p5.dom.js" type="text/javascript"></script>
+    <script src="/javascripts/libraries/p5.sound.js" type="text/javascript"></script>
+    <script src="/javascripts/libraries/p5.speech.js" type="text/javascript"></script>
 
-  <!-- Craig's AFrameP5 AR library -->
-  <script language="javascript" type="text/javascript" src="/libraries/aframep5_ar.js"></script>
+    <!-- Craig's AFrameP5 AR library -->
+    <script language="javascript" type="text/javascript" src="/libraries/aframep5_ar.js"></script>
 
-  <script src="/javascripts/models/animatedimg.js" type="text/javascript"></script>
-  <script src="/javascripts/models/food.js"></script>
-  <script src="/javascripts/sketch/preload.js" type="text/javascript"></script>
-  <script src="/javascripts/models/character.js" type="text/javascript"></script>
-  <script src="/javascripts/sketch/sketch.js" type="text/javascript"></script>
+    <script src="/javascripts/models/animatedimg.js" type="text/javascript"></script>
+    <script src="/javascripts/models/food.js"></script>
+    <script src="/javascripts/sketch/preload.js" type="text/javascript"></script>
+    <script src="/javascripts/models/character.js" type="text/javascript"></script>
+    <script src="/javascripts/sketch/sketch.js" type="text/javascript"></script>
+  {{/if}}
 </head>
 
 <body>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="navbar-brand" style="text-align: left;" href="/">My Buddy</a>
+        <a class="nav-item nav-link" href="about">About</a>
+        <!-- <a class="nav-item nav-link" href="unlock.html">Unlock</a> -->
+        <div class="" id="btn-container">
+          <a href="/showtime/auth/google">
+            <button type="button" id="sign-in" class="btn btn-outline-primary" style="float: right;">Log in</button>
+          </a>
+          <a href="/showtime/logout">
+            <button type="button" id="sign-out" class="btn btn-outline-primary" style="float: right; display: none">
+    						 <div id="photo-container">
+    							 <img style="width: 30px; display: inline-table" id="photo" />
+    							 <div id="name"></div>
+    						 </div>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
   {{{body}}}
+
+  <script>
+    var currUser
+    window.onload = function() {
+
+      var decodedJson = decodeURIComponent("{{{encodedJson}}}");
+      currUser = JSON.parse(decodedJson);
+      {{#if isGame}}
+      myChar = new Character(currUser.creature);
+      {{/if}}
+
+      if(currUser) {
+        document.getElementById('sign-out').style.display = 'block';
+        document.getElementById('sign-in').style.display = 'none';
+        document.getElementById('name').textContent = `Sign out (${currUser.name})`;
+        if (currUser.photoURL) {
+          document.getElementById('photo').src = currUser.photoURL;
+          document.getElementById('photo').style.display = 'block';
+        } else {
+          document.getElementById('photo').style.display = 'none';
+        }
+      }
+    }
+  </script>
 </body>
 
 </html>
