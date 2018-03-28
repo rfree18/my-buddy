@@ -264,7 +264,7 @@ function Character(obj) {
       this.properties.health -= 1;
     }
 
-    if (this.properties.health <= 0 && this.properties.status.alive === true) {
+    if (this.properties.health <= 0 && this.properties.alive === true) {
       this.die();
     } else if (this.properties.health < 15) {
       this.properties.condition.sick = true;
