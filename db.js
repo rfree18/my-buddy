@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const nconf = require('nconf');
 const findOrCreate = require('mongoose-find-or-create')
 
+nconf.env().file({
+  file: 'config.json'
+});
+
 const User = new mongoose.Schema({
   googleId: {
     type: String,
@@ -24,6 +28,8 @@ const User = new mongoose.Schema({
 User.plugin(findOrCreate);
 
 mongoose.model('User', User);
+
+console.log(nconf.get('NODE_ENV'));
 
 if (nconf.get('NODE_ENV') === 'PRODUCTION') {
   mongoose.connect(nconf.get('dbconf'));
