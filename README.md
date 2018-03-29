@@ -6,3 +6,5 @@ Currently in it's alpha stage, our program is a working virtual pet written usin
 All sound credits as of right now belong to Pokemon Emerald.
 
 All images are original assets.
+
+## [Click here for "Showtime" update](https://github.com/rfree18/my-buddy/tree/showtime)
