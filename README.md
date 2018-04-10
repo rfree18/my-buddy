@@ -1,4 +1,4 @@
-# MyBuddy Virtual Pet - Showtime
+# My Buddy Virtual Pet - Showtime
 The biggest update to My Buddy (code named 'Showtime') is set to be a near rewrite of the game's infrastructure. That
 means a lot of goodies for you :)
 
